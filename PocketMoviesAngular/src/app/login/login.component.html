@@ -1,0 +1,31 @@
+<div class="wrapper">
+    <div class="inner" style="background-color: #282828 !important;">
+        <div class="login-image-holder">
+            <img class="login-img" src="../../assets/imgs/movie.jpg" alt="">
+        </div>
+        <form [formGroup]="loginForm" class="main-form">
+            <div class="form-group">
+                <h3>Login</h3>
+                <!-- <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                <div class="alert alert-danger" style="font-size: 13px; width: 95%; margin-left: 5%">
+                    <strong>{{ error|escape }}</strong>
+                </div> -->
+                <div class="form-holder">
+                    <input id="loginUsername" type="text" class="form-control" formControlName="inputUsername" placeholder="Username"/>
+                </div>
+                <div class="form-holder">
+                    <input id="loginPassword" type="password" class="form-control" formControlName="inputPassword" placeholder="Password">
+                </div>
+                <div class="form-login-pw-reset">
+                    <p>Forgot your password? <br /><a class="signup-a" href="{% url 'reset_password' %}">Reset Password</a></p>
+                </div>
+                <div class="form-login">
+                    <button class="signup-btn" type="button" (click)="submitForm()">Login</button>
+                    <p>Don't Have account? <a class="signup-a" href="{% url 'register' %}">Sign Up</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
