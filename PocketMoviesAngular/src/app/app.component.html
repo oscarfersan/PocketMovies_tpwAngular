@@ -32,12 +32,12 @@
           <ul class="nav nav-pills flex-column" id="menu"
             style="font-size: 25px; font-weight: bold; font-family: 'Times New Roman', Times, serif;">
             <li class="nav-item">
-              <a href="{% url 'ListMovies' %}" class="nav-link align-middle px-0">
+              <a href="/listMovies" class="nav-link align-middle px-0">
                 <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Movies</span>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{% url 'ListActors' %}" class="nav-link align-middle px-0">
+              <a href="/listActors" class="nav-link align-middle px-0">
                 <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Actors</span>
               </a>
             </li>
@@ -81,7 +81,7 @@
       </div>
       <div class="col py-3" style="margin-top: 80px;">
         <!-- block content -->
-        
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>
