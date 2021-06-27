@@ -19,14 +19,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-
-def checkGroup(request):
-    if request.user.groups.filter(name="client").exists():
-        return "client"
-    else:
-        return "admin"
-
-
 @api_view(['POST'])
 def register_user(request):
     serializer = ProfileSerializer(data=request.data)
@@ -62,8 +54,6 @@ def searchMovie(request):
 
 
 # ----------------------------------------------------------------------------------
-
-
 # 'movies/<str:movie>
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -91,6 +81,16 @@ def list_movies(request, movie):
         movies = movies.filter(title__icontains=search_term)
 
     serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
+
+
+
+# 'genres
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_genres(request):
+    genres = Genre.objects.all()
+    serializer = GenreSerializer(genres, many=True)
     return Response(serializer.data)
 
 
@@ -432,8 +432,6 @@ def addMoviesWatched(request):
         profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if user != profile.user:
-        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.movies_watched.add(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
 

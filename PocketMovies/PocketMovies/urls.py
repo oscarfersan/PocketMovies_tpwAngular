@@ -27,6 +27,7 @@ urlpatterns = [
     path('login/', fviews.obtain_auth_token, name='Login'),
     path('register/', views.register_user, name='Register'),
 
+    path('genres/', views.list_genres, name='Genres'),
     path('movies/<str:movie>', views.list_movies, name='ListMovies'),
     path('people/<str:person>', views.list_people, name='ListActors'),
     path('people/<str:person>/<int:id>', views.infoPeople, name="infoProducer"),
