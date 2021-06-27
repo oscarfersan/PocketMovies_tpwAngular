@@ -1,1 +1,87 @@
-<p>list-producer works!</p>
+<div class="container">
+    <h3>PRODUCERS</h3>
+    <div class="row mt-2 align-items-center">
+        <!-- <div class="col">
+            {% if producer_role == "ACTOR" %}
+                <a href="{% url 'addActor' %}">
+            {% endif %}
+            {% if producer_role == "PRODUCER" %}
+                <a href="{% url 'addProducer' %}">
+            {% endif %}
+            {% if producer_role == "DIRECTOR" %}
+                <a href="{% url 'addDirector' %}">
+            {% endif %}
+             {% if user.is_superuser %}
+            <button style="width: 30vh; height: 6vh;" class="btn btn-outline-dark"><i class="bi bi-pencil-square"></i>Add New {{ producer_role }}</button></a>
+            {% endif %}
+        </div> -->
+        <div class="col">
+            <form action="." method="get" autocomplete="off" style="float:right">
+                <!-- {% csrf_token %} -->
+                <div class="mt-3">
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-success" type="submit"><i class="bi bi-search icon"></i></button>
+                        <input name="title" id="title" type="text" class="form-control-lg" placeholder="Search"
+                            aria-label="Search" aria-describedby="basic-addon1" style="width: 50vh">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="pb-5">
+        <!-- {% for producer in producer_list %} -->
+        <div class="col" *ngFor="let producer of producer_list">
+            <div class="card mb-4 my_class card-shadow">
+                <a href="/producer/{{ producer.id }}"
+                    style="color:inherit;text-decoration: none">
+                    <div class="row">
+                        <div class="col">
+                            <img width="200" height="200" class="card-img my_class" src="{{ producer.imageField }}"
+                                alt="Actor Card">
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="card-body">
+                                <h5 class="card-title"> {{ producer.name }}</h5>
+                                <p class="card-text">{{ producer.website }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- <nav aria-label="Page navigation" style="position: absolute; bottom: 0; right:50vh; left:50vh;">
+  <ul class="pagination justify-content-center">
+    {% if producer_list.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ producer_list.previous_page_number }}">Previous</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+    {% endif %}
+    {% for i in producer_list.paginator.page_range %}
+      {% if producer_list.number == i %}
+        <li class="page-item active" aria-current="page">
+          <span class="page-link">
+            {{ i }}
+          </span>
+        </li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if producer_list.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ producer_list.next_page_number }}">Next</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav> -->
+</div>

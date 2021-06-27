@@ -98,7 +98,7 @@ def searchMovie(request):
 # 'movies/<str:movie>
 @api_view(['GET'])
 def list_movies(request, movie):
-    profile = Profile.objects.get(user=User.objects.get(username=request.GET['username']))
+    ##profile = Profile.objects.get(user=User.objects.get(username=request.GET['username']))
     genre = ''
     if movie == 'all':
         movies = Movie.objects.all()

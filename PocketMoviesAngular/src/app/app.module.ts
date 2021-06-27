@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ListMoviesComponent } from './list-movies/list-movies.component';
 import { ListPeopleComponent } from './list-people/list-people.component';
 import { ListProducerComponent } from './list-producer/list-producer.component';
-
+import {HttpClientModule} from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +18,8 @@ import { ListProducerComponent } from './list-producer/list-producer.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,12 +2,6 @@ from app.models import Movie, Actor, Producer, Director, Genre, Profile
 from rest_framework import serializers
 
 
-class MovieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Movie
-        fields = ('title', 'description', 'rating', 'director', 'producer', 'cast', 'imageField', 'published_date')
-
-
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
@@ -34,3 +28,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = (
             'user', 'favorite_genres', 'favorite_movies', 'movies_watched', 'want_to_watch', 'imageField')
+
+
+class MovieSerializer(serializers.ModelSerializer):
+    cast = ActorSerializer(many=True)
+    director = DirectorSerializer(many=True)
+    producer = ProducerSerializer(many=True)
+    class Meta:
+        model = Movie
+        fields = ('title', 'description', 'rating', 'director', 'producer', 'cast', 'imageField', 'published_date')
