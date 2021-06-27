@@ -40,13 +40,7 @@ urlpatterns = [
     path('delete/producer/<id>', views.deleteProducer, name="deleteProducer"),
     path('delete/movie/<id>', views.deleteMovie, name="deleteMovie"),
 
-
-
-    path('movies/my_favorite_movies/', views.list_movies, {'movie': 'my_favorite_movies'}, name='my_favorite_movies'),
-    path('movies/my_want_to_watch/', views.list_movies, {'movie': 'my_want_to_watch'}, name='my_want_to_watch'),
-    path('movies/my_watched_movies/', views.list_movies, {'movie': 'my_watched_movies'}, name='my_watched_movies'),
-
-
+    #to be done
     path('search/', views.searchMovie, name="searchMovie"),
 
 

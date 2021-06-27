@@ -344,7 +344,7 @@ def deleteMovie(request, id):
 def deleteMyFavoriteMovies(request, id):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(id=0)
+        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     profile.favorite_movies.remove(movie)
@@ -356,7 +356,7 @@ def deleteMyFavoriteMovies(request, id):
 def deleteMoviesWatched(request, id):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(id=0)
+        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     profile.movies_watched.remove(movie)
@@ -368,7 +368,7 @@ def deleteMoviesWatched(request, id):
 def deleteWantToWatch(request, id):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(id=0)
+        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     profile.want_to_watch.remove(movie)
@@ -380,7 +380,7 @@ def deleteWantToWatch(request, id):
 def addMyFavoriteMovies(request):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(id=0)
+        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     profile.favorite_movies.add(movie)
@@ -392,7 +392,7 @@ def addMyFavoriteMovies(request):
 def addMoviesWatched(request):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(id=0)
+        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     profile.movies_watched.add(movie)
@@ -404,7 +404,7 @@ def addMoviesWatched(request):
 def addWantToWatch(request):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(id=0)
+        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     profile.want_to_watch.add(movie)
