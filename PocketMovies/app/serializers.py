@@ -34,3 +34,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = (
             'user', 'favorite_genres', 'favorite_movies', 'movies_watched', 'want_to_watch', 'imageField')
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ['name']

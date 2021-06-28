@@ -9,71 +9,32 @@ from app.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.forms.models import model_to_dict
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from app.serializers import *
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
-
-def checkGroup(request):
-    if request.user.groups.filter(name="client").exists():
-        return "client"
-    else:
-        return "admin"
-
-
+@api_view(['POST'])
 def register_user(request):
-    register_form = SignUpForm()
-    if request.method == 'POST':
-        register_form = SignUpForm(request.POST)
-        if register_form.is_valid():
-            new_user = register_form.save()
-            new_user.refresh_from_db()
-
-            new_user.profile.user.first_name = register_form.cleaned_data['fname']
-            new_user.profile.user.last_name = register_form.cleaned_data['lname']
-            new_user.profile.user.email = register_form.cleaned_data['email']
-            new_user.profile.favorite_genres.set(register_form.cleaned_data['favorite_genres'])
-
-            group = Group.objects.get(name="client")
-            new_user.groups.add(group)
-            messages.success(request, "Registration successful.")
-            return redirect('home')
-        messages.error(request, register_form.errors.as_data())
-
-    return render(request, "register.html", {"form": register_form})
-
-
-def login_user(request):
-    if request.method == 'POST':
-        login_form = LoginForm(request, data=request.POST)
-        if login_form.is_valid():
-            username = login_form.cleaned_data['username']
-            password = login_form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.info(request, f"User {username} successfully logged in!")
-                request.session['username'] = username
-                return redirect('ListMovies')
-            else:
-                messages.error(request, "Invalid username or password.")
-                return render(request, "login.html", {"form": login_form})
-        else:
-            messages.error(request, "Invalid username or password.")
-            return render(request, "login.html", {"form": login_form})
+    serializer = ProfileSerializer(data=request.data)
+    data = {}
+    if serializer.is_valid():
+        profile = serializer.save()
+        group = Group.objects.get(name="client")
+        profile.user.groups.add(group)
+        token = Token.objects.get(user=profile.user).key
+        data = {'first name': profile.user.first_name, 'email': profile.user.email, 'token': token}
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
-        login_form = LoginForm()
-        return render(request, "login.html", {"form": login_form})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@login_required()
-def logout_user(request):
-    logout(request)
-    try:
-        del request.session['username']
-    except KeyError:
-        pass
-    return redirect('home')
 
 
 def home(request):
@@ -93,12 +54,12 @@ def searchMovie(request):
 
 
 # ----------------------------------------------------------------------------------
-
-
 # 'movies/<str:movie>
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def list_movies(request, movie):
-    profile = Profile.objects.get(user=User.objects.get(username=request.GET['username']))
+    user = request.user
+    profile = Profile.objects.get(user=user)
     genre = ''
     if movie == 'all':
         movies = Movie.objects.all()
@@ -123,26 +84,34 @@ def list_movies(request, movie):
     return Response(serializer.data)
 
 
+
+# 'genres
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_genres(request):
+    genres = Genre.objects.all()
+    serializer = GenreSerializer(genres, many=True)
+    return Response(serializer.data)
+
+
 # people/<str:person>
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def list_people(request, person):
     if person == 'actors':
         people = Actor.objects.all()
-        person_role = 'actor'.upper()
         if 'title' in request.GET:
             search_term = request.GET['title']
             people = people.filter(name__icontains=search_term)
         serializer = ActorSerializer(people, many=True)
     elif person == 'producers':
         people = Producer.objects.all()
-        person_role = 'producer'.upper()
         if 'title' in request.GET:
             search_term = request.GET['title']
             people = people.filter(name__icontains=search_term)
         serializer = ProducerSerializer(people, many=True)
     elif person == 'directors':
         people = Director.objects.all()
-        person_role = 'director'.upper()
         if 'title' in request.GET:
             search_term = request.GET['title']
             people = people.filter(name__icontains=search_term)
@@ -153,6 +122,7 @@ def list_people(request, person):
 
 # 'people/<str:person>/<int:id>
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def infoPeople(request, person, id):
     if person == 'actors':
         try:
@@ -185,6 +155,7 @@ def infoPeople(request, person, id):
 
 # 'movies/<int:id>
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def infoMovie(request, movie_id):
     try:
         movie = Movie.objects.get(id=movie_id)
@@ -198,8 +169,12 @@ def infoMovie(request, movie_id):
 
 # add/actor/
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def addActor(request):
     serializer = ActorSerializer(data=request.data)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -208,8 +183,12 @@ def addActor(request):
 
 # add/director/
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def addDirector(request):
     serializer = DirectorSerializer(data=request.data)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -218,8 +197,12 @@ def addDirector(request):
 
 # add/producer/
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def addProducer(request):
     serializer = ProducerSerializer(data=request.data)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -227,9 +210,13 @@ def addProducer(request):
 
 
 # add/movie/
+@permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def addMovie(request):
     serializer = MovieSerializer(data=request.data)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -238,6 +225,7 @@ def addMovie(request):
 
 # edit/actor/<id>
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def editActor(request, id):
     id = request.data['id']
     try:
@@ -245,6 +233,9 @@ def editActor(request, id):
     except Actor.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = ActorSerializer(actor, data=request.data)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
@@ -253,6 +244,7 @@ def editActor(request, id):
 
 # edit/director/<id>
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def editDirector(request, id):
     id = request.data['id']
     try:
@@ -260,6 +252,9 @@ def editDirector(request, id):
     except Director.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = ActorSerializer(director, data=request.data)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
@@ -268,6 +263,7 @@ def editDirector(request, id):
 
 # edit/producer/<id>
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def editProducer(request, id):
     id = request.data['id']
     try:
@@ -275,6 +271,9 @@ def editProducer(request, id):
     except Producer.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = ProducerSerializer(producer, data=request.data)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
@@ -283,6 +282,7 @@ def editProducer(request, id):
 
 # edit/movie/<id>
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def editMovie(request, id):
     id = request.data['id']
     try:
@@ -290,6 +290,9 @@ def editMovie(request, id):
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = MovieSerializer(movie, data=request.data)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
@@ -298,101 +301,135 @@ def editMovie(request, id):
 
 # delete/actor/<id>
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def deleteActor(request, id):
     try:
         actor = Actor.objects.get(id=id)
     except Director.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     actor.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # delete/director/<id>
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def deleteDirector(request, id):
     try:
         director = Director.objects.get(id=id)
     except Director.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     director.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # delete/producer/<id>
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def deleteProducer(request, id):
     try:
         producer = Producer.objects.get(id=id)
     except Producer.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     producer.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # delete/movie/<id>
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def deleteMovie(request, id):
     try:
         movie = Movie.objects.get(id=id)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    user = request.user
+    if user.groups.filter(name="client").exists():
+        return Response(status=status.HTTP_403_FORBIDDEN)
     movie.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # delete/my_favorite_movies/<id>
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def deleteMyFavoriteMovies(request, id):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
+        user = request.user
+        profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    if user != profile.user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.favorite_movies.remove(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # delete/movies_watched/<id>
+@permission_classes([IsAuthenticated])
 @api_view(['DELETE'])
 def deleteMoviesWatched(request, id):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
+        user = request.user
+        profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    if user != profile.user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.movies_watched.remove(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # delete/want_to_watch/<id>
+@permission_classes([IsAuthenticated])
 @api_view(['DELETE'])
 def deleteWantToWatch(request, id):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
+        user = request.user
+        profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    if user != profile.user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.want_to_watch.remove(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # add/my_favorite_movies/<id>
+@permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def addMyFavoriteMovies(request):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
+        user = request.user
+        profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    if user != profile.user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.favorite_movies.add(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 # add/movies_watched/<id>
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def addMoviesWatched(request):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
+        user = request.user
+        profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     profile.movies_watched.add(movie)
@@ -401,11 +438,15 @@ def addMoviesWatched(request):
 
 # add/want_to_watch/<id>
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def addWantToWatch(request):
     try:
         movie = Movie.objects.get(id=id)
-        profile = Profile.objects.get(user=User.objects.get(username=request.data['username']))
+        user = request.user
+        profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    if user != profile.user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.want_to_watch.add(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)

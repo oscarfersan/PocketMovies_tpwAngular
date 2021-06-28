@@ -20,8 +20,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from app import views
+from rest_framework.authtoken import views as fviews
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('login/', fviews.obtain_auth_token, name='Login'),
+    path('register/', views.register_user, name='Register'),
+
+    path('genres/', views.list_genres, name='Genres'),
     path('movies/<str:movie>', views.list_movies, name='ListMovies'),
     path('people/<str:person>', views.list_people, name='ListActors'),
     path('people/<str:person>/<int:id>', views.infoPeople, name="infoProducer"),
