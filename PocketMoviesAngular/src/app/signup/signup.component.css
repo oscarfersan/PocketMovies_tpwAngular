@@ -9,6 +9,9 @@ font-family: "Montserrat-SemiBold";
 src: url("../../assets/fonts/montserrat/Montserrat-SemiBold.ttf"); }
 
 * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     color: #999;
     font-family: "Montserrat-Regular";
 }
@@ -36,17 +39,16 @@ src: url("../../assets/fonts/montserrat/Montserrat-SemiBold.ttf"); }
     box-shadow: 0px 0px 20px 5px #190061;
 }
 
-.login-img {
+.register-img {
     width: 350px; 
     height: 300px; 
     border-radius: 10%;
     box-shadow: 3px 3px 10px 0px #3500D3;
 }
 
-.login-image-holder {
+.register-image-holder {
     width: 50%;
-    padding-top: 5%;
-    padding-bottom: 5%;
+    padding-top: 18%;
     padding-left: 5%;
 }
 
@@ -59,7 +61,7 @@ src: url("../../assets/fonts/montserrat/Montserrat-SemiBold.ttf"); }
 
 .main-form {
     width: 50%;
-    padding-top: 77px;
+    padding-top: 60px;
     padding-right: 60px;
     padding-left: 15px;
 }
@@ -270,19 +272,6 @@ h5 {
     font-size: 17px;
 }
 
-.form-login-pw-reset {
-    text-align: center;
-    margin-left: 23px;
-    font-size: 17px;
-}
-
-.form-pw-reset {
-    display: flex;
-    margin-left: 23px;
-    text-align: right;
-    font-size: 17px;
-}
-
 @media (max-width: 767px) {
     .inner {
         display: block;
@@ -302,3 +291,4 @@ h5 {
         background: none;
     }
 }
+    

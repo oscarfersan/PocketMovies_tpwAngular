@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
     get inputUsername() {
         return this.loginForm.get("inputUsername");
-      }
+    }
 
     submitForm() {
     }

@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ListMoviesComponent } from './list-movies/list-movies.component';
 import { ListPeopleComponent } from './list-people/list-people.component';
 import { ListProducerComponent } from './list-producer/list-producer.component';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ListProducerComponent } from './list-producer/list-producer.component';
     ListMoviesComponent,
     ListPeopleComponent,
     ListProducerComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,

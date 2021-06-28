@@ -19,9 +19,11 @@ from app import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from app import views
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 urlpatterns = [
+    path('login/', obtain_jwt_token),
+    path('refresh-token/', refresh_jwt_token),
     path('movies/<str:movie>', views.list_movies, name='ListMovies'),
     path('people/<str:person>', views.list_people, name='ListActors'),
     path('people/<str:person>/<int:id>', views.infoPeople, name="infoProducer"),
