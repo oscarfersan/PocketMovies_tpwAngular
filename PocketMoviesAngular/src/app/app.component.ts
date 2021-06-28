@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   exists:boolean = true;
-  title = 'PocketMoviesAngular';
+  title = 'Pocket Movies';
 }

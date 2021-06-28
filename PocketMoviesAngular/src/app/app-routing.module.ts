@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { ListPeopleComponent } from './list-people/list-people.component';
 import { ListMoviesComponent } from './list-movies/list-movies.component';
 import { SignupComponent } from './signup/signup.component';
+import { PersonalListComponent } from './personal-list/personal-list.component';
 
 const routes: Routes = [
     {path:'',component:HomeComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
     {path: 'signup', component: SignupComponent},
     {path:'listActors',component:ListPeopleComponent},
     {path:'listMovies',component:ListMoviesComponent},
+    {path: 'personalList/:type', component: PersonalListComponent},
 ]
 
 @NgModule({

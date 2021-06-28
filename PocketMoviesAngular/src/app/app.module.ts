@@ -10,6 +10,7 @@ import { ListMoviesComponent } from './list-movies/list-movies.component';
 import { ListPeopleComponent } from './list-people/list-people.component';
 import { ListProducerComponent } from './list-producer/list-producer.component';
 import { SignupComponent } from './signup/signup.component';
+import { PersonalListComponent } from './personal-list/personal-list.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { SignupComponent } from './signup/signup.component';
     ListPeopleComponent,
     ListProducerComponent,
     SignupComponent,
+    PersonalListComponent,
   ],
   imports: [
     BrowserModule,
