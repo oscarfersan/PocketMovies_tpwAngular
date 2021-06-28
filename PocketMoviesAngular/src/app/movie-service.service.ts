@@ -14,6 +14,10 @@ export class MovieServiceService {
   constructor(private http:HttpClient) { }
   getMovies(param:string):Observable<Movie[]>{
     const url = this.baseURL+'movies/'+param;
-    return this.http.get<Movie[]>(url);;
+    return this.http.get<Movie[]>(url);
+  }
+  getSelected(id:number):Observable<Movie>{
+    const url = this.baseURL+'movies/info/'+id;
+    return this.http.get<Movie>(url);
   }
 }

@@ -39,7 +39,7 @@
 
         <div *ngFor="let movie of movie_list" class="col-auto mb-5" style="margin-right: 45px;">
             <div class="card card-movie" style="width: 22rem;">
-                <a href="{% url 'infoMovie' id=movie.id %}" style="color:inherit;text-decoration: none;">
+                <a routerLink="/movie/{{movie.id}}" style="color:inherit;text-decoration: none;">
                     <img width="343" height="505" class="card-img-top img-movie" src="{{ movie.imageField }}"
                         alt="Card image cap" />
                 </a>

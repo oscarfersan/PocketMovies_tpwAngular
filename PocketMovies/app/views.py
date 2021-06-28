@@ -188,7 +188,7 @@ def infoPeople(request, person, id):
 def infoMovie(request, movie_id):
     try:
         movie = Movie.objects.get(id=movie_id)
-        serializer = ActorSerializer(movie)
+        serializer = MovieSerializer(movie)
         return Response(serializer.data)
     except:
         movie = None

@@ -36,4 +36,4 @@ class MovieSerializer(serializers.ModelSerializer):
     producer = ProducerSerializer(many=True)
     class Meta:
         model = Movie
-        fields = ('title', 'description', 'rating', 'director', 'producer', 'cast', 'imageField', 'published_date')
+        fields = ('id','title', 'description', 'rating', 'director', 'producer', 'cast', 'imageField', 'published_date')
