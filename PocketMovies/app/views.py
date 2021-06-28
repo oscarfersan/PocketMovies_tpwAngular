@@ -98,7 +98,7 @@ def searchMovie(request):
 # 'movies/<str:movie>
 @api_view(['GET'])
 def list_movies(request, movie):
-    profile = Profile.objects.get(user=User.objects.get(username=request.GET['username']))
+    ##profile = Profile.objects.get(user=User.objects.get(username=request.GET['username']))
     genre = ''
     if movie == 'all':
         movies = Movie.objects.all()
@@ -174,7 +174,7 @@ def infoPeople(request, person, id):
             return Response(serializer.data)
     elif person == 'directors':
         try:
-            director = Producer.objects.get(id=id)
+            director = Director.objects.get(id=id)
             serializer = DirectorSerializer(director)
             return Response(serializer.data)
         except:
@@ -188,7 +188,7 @@ def infoPeople(request, person, id):
 def infoMovie(request, movie_id):
     try:
         movie = Movie.objects.get(id=movie_id)
-        serializer = ActorSerializer(movie)
+        serializer = MovieSerializer(movie)
         return Response(serializer.data)
     except:
         movie = None
