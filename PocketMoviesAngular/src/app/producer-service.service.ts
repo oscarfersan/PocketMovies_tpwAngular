@@ -14,4 +14,8 @@ export class ProducerServiceService {
   getProducer():Observable<Producer[]>{
     return this.http.get<Producer[]>(this.baseURL+'people/producers')
   }
+  getSelected(id:number):Observable<Producer>{
+    const url = this.baseURL+'people/'+'producers'+'/'+id;
+    return this.http.get<Producer>(url);
+  }
 }

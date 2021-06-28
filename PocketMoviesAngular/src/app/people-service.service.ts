@@ -18,4 +18,8 @@ export class PeopleServiceService {
     const url = this.baseURL+'people/'+param;
     return this.http.get<Person[]>(url);;
   }
+  getSelected(param:string,id:number):Observable<Person>{
+    const url = this.baseURL+'people/'+param+'/'+id;
+    return this.http.get<Person>(url);
+  }
 }

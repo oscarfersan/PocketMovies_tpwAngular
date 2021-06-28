@@ -8,13 +8,19 @@ import { ListMoviesComponent } from './list-movies/list-movies.component';
 import { ListPeopleComponent } from './list-people/list-people.component';
 import { ListProducerComponent } from './list-producer/list-producer.component';
 import {HttpClientModule} from '@angular/common/http';
+import { InfoMovieComponent } from './info-movie/info-movie.component';
+import { InfoPersonComponent } from './info-person/info-person.component';
+import { InfoProducerComponent } from './info-producer/info-producer.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ListMoviesComponent,
     ListPeopleComponent,
-    ListProducerComponent
+    ListProducerComponent,
+    InfoMovieComponent,
+    InfoPersonComponent,
+    InfoProducerComponent
   ],
   imports: [
     BrowserModule,

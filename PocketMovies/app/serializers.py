@@ -5,21 +5,21 @@ from rest_framework import serializers
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
-        fields = (
+        fields = ('id',
             'name', 'birthdate', 'years_active', 'nationality', 'imageField', 'twitterAccount', 'instagramAccount')
 
 
 class ProducerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Producer
-        fields = (
+        fields = ('id',
             'name', 'city', 'country', 'website', 'imageField', 'twitterAccount', 'instagramAccount')
 
 
 class DirectorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Director
-        fields = (
+        fields = ('id',
             'name', 'nationality', 'birthdate', 'website', 'imageField', 'twitterAccount', 'instagramAccount')
 
 

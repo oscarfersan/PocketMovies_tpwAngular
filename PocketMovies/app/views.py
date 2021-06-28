@@ -174,7 +174,7 @@ def infoPeople(request, person, id):
             return Response(serializer.data)
     elif person == 'directors':
         try:
-            director = Producer.objects.get(id=id)
+            director = Director.objects.get(id=id)
             serializer = DirectorSerializer(director)
             return Response(serializer.data)
         except:
