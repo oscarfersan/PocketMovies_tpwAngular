@@ -1,5 +1,6 @@
 from app.models import Movie, Actor, Producer, Director, Genre, Profile
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -30,10 +31,15 @@ class DirectorSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username")
+    email = serializers.CharField(source="user.email")
+    first_name = serializers.CharField(source="user.first_name")
+    last_name = serializers.CharField(source="user.last_name")
+
     class Meta:
         model = Profile
         fields = (
-            'user', 'favorite_genres', 'favorite_movies', 'movies_watched', 'want_to_watch', 'imageField')
+            'username', 'email','first_name','last_name','favorite_genres', 'favorite_movies', 'movies_watched', 'want_to_watch', 'imageField')
 
 
 class GenreSerializer(serializers.ModelSerializer):

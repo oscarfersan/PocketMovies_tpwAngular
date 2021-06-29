@@ -32,6 +32,7 @@ urlpatterns = [
     path('people/<str:person>', views.list_people, name='ListActors'),
     path('people/<str:person>/<int:id>', views.infoPeople, name="infoProducer"),
     path('movies/<int:id>', views.infoMovie, name="infoMovie"),
+    path('profile/', views.infoProfile, name="Profile"),
 
     path('add/actor/', views.addActor, name="addActor"),
     path('add/director/', views.addDirector, name="addDirector"),
