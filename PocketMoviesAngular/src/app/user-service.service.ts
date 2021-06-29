@@ -1,4 +1,6 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AuthenticationService } from './authentication.service';
 import { Genre } from './classes/Genre';
 import { Movie } from './classes/Movie';
 
@@ -7,7 +9,14 @@ import { Movie } from './classes/Movie';
 })
 export class UserServiceService {
 
-    constructor() {
+    private httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': 'token ' + this.authenticationService.getToken()
+        })
+    };
+
+    constructor(private authenticationService: AuthenticationService) {
     }
 
     fetchFavoriteMovies(): Movie[] {

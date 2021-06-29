@@ -9,38 +9,41 @@ import { Router } from '@angular/router';
 })
 export class AuthenticationService {
 
-    private loginUrl: string;
+  private loginUrl: string;
 
-    private httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
-    };
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
-    constructor(private http: HttpClient, private router: Router) {
-        this.loginUrl = environment.baseUrl + '/login';
-    }
+  constructor(private http: HttpClient, private router: Router) {
+    this.loginUrl = environment.baseUrl + '/login';
+  }
 
-    login(username, password) {
-        this.http.post<string>(this.loginUrl, { 'username': username, 'password': password }, this.httpOptions)
-            .subscribe(
-                value => {
-                    if (value != null) {
-                        localStorage.setItem('token', value);
-                        this.router.navigate(['/home']);
-                    } else {
-                        window.alert("Invalid credentials!");
-                    }
-                },
-                error => { return throwError("Authentication request unsuccessful.") }
-            );
-    }
+  login(username, password) {
+    this.http.post<string>(this.loginUrl, { 'username': username, 'password': password }, this.httpOptions)
+      .subscribe(
+        value => {
+          if (value != null) {
+            localStorage.setItem('token', value);
+            this.router.navigate(['/home']);
+          } else {
+            window.alert("Invalid credentials!");
+          }
+        },
+        error => { return throwError("Authentication request unsuccessful.") }
+      );
+  }
 
+  getToken() {
+    return localStorage.getItem("token");
+  }
 
-    isLoggedIn() {
-    }
+  isLoggedIn() {
+  }
 
-    logout() {
+  logout() {
 
-    }
+  }
 }

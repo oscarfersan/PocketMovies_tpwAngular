@@ -19,11 +19,14 @@ from app import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+from rest_framework.authtoken import views as fviews
 
 urlpatterns = [
-    path('login/', obtain_jwt_token),
-    path('refresh-token/', refresh_jwt_token),
+    path('admin/', admin.site.urls),
+    path('login/', fviews.obtain_auth_token, name='Login'),
+    path('register/', views.register_user, name='Register'),
+
+    path('genres/', views.list_genres, name='Genres'),
     path('movies/<str:movie>', views.list_movies, name='ListMovies'),
     path('people/<str:person>', views.list_people, name='ListActors'),
     path('people/<str:person>/<int:id>', views.infoPeople, name="infoProducer"),
@@ -42,8 +45,6 @@ urlpatterns = [
     path('delete/producer/<id>', views.deleteProducer, name="deleteProducer"),
     path('delete/movie/<id>', views.deleteMovie, name="deleteMovie"),
 
-    #to be done
-    path('search/', views.searchMovie, name="searchMovie"),
 
 
 
