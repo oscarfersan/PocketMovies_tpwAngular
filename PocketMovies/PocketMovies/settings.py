@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework',
     'corsheaders',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'django_rest_passwordreset',
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,10 @@ REST_FRAMEWORK = {
 # Cors (Cross - Origin Resource Sharing) config
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_POST = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "pocketmoviesapp@gmail.com"
+EMAIL_HOST_PASSWORD = "epggylhqtpkktzwy"

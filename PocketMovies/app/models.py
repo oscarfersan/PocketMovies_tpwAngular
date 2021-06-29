@@ -1,15 +1,37 @@
+from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+from django.dispatch import receiver
+from django.urls import reverse
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.core.mail import send_mail
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+
+    email_plaintext_message = "To restore you password save this token and use it in the reset password page: /n {}".format(reset_password_token.key)
+
+    send_mail(
+        # title:
+        "Password Reset for PocketMovies",
+        # message:
+        email_plaintext_message,
+        # from:
+        "marta.martocas@hotmail.com",
+        # to:
+        [reset_password_token.user.email]
+    )
 
 
 # Create your models here.
