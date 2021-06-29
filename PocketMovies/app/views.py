@@ -24,14 +24,14 @@ from rest_framework.pagination import PageNumberPagination
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request):
-    serializer = ProfileSerializer(data=request.data)
-    data = {}
+    serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
-        profile = serializer.save()
+        user = serializer.save()
+        profile = Profile.objects.get(user=User)
         group = Group.objects.get(name="client")
         profile.user.groups.add(group)
         token = Token.objects.get(user=profile.user).key
-        data = {'first name': profile.user.first_name, 'email': profile.user.email, 'username': profile.user.username,
+        data = { 'email': profile.user.email, 'username': profile.user.username,
                 'token': token}
         serializer.save()
         return Response(data, status=status.HTTP_201_CREATED)
