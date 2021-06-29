@@ -161,6 +161,17 @@ def infoMovie(request, movie_id):
         return Response(serializer.data)
 
 
+# 'profile
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def infoProfile(request):
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    serializer = ProfileSerializer(profile)
+    return Response(serializer.data)
+
+
+
 # add/actor/
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
