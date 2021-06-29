@@ -404,7 +404,7 @@ def deleteWantToWatch(request, id):
 # add/my_favorite_movies/<id>
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
-def addMyFavoriteMovies(request):
+def addMyFavoriteMovies(request, id):
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
@@ -420,7 +420,7 @@ def addMyFavoriteMovies(request):
 # add/movies_watched/<id>
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def addMoviesWatched(request):
+def addMoviesWatched(request,id):
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
@@ -434,7 +434,7 @@ def addMoviesWatched(request):
 # add/want_to_watch/<id>
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def addWantToWatch(request):
+def addWantToWatch(request,id):
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
