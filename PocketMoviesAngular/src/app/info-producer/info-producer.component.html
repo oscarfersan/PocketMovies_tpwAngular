@@ -1,0 +1,32 @@
+<div class="container align-items-center movie-details bg-dark text-white">
+    <div class="row d-flex justify-content-between w-100 p-3">
+        <div class="col-md-6 ">
+            <h1>{{ producer.name.toUpperCase() }}</h1>
+            <div class="d-flex flex-column mb-3">
+                <div class="person-info">
+                    <p>City: {{ producer.city }}</p>
+                    <p>Country: {{ producer.country }}</p>
+                    <p><i class="bi bi-twitter"></i> Twitter: {{ producer.twitterAccount }}</p>
+                    <p><i class="bi bi-instagram"></i> Instagram: {{ producer.instagramAccount }}</p>
+                    <p>Website: <a href="{{ producer.website }}">{{ producer.website }}</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <img src="{{ producer.imageField }}" class="movie-image">
+        </div>
+        <div class="row w-25">
+            <div class="col">
+                <a class="btn" href="{% url 'editProducer' id=producer.id %}" role="button">
+                    <i class="bi bi-pencil-fill icon-info"></i>
+                </a>
+            </div>
+            <div class="col">
+                <!-- <a class="btn" href="{% url 'deleteProducer' id=producer.id %}" role="button"
+                    onclick="return confirm('Are you sure you want to delete {{ producer }}?');"> -->
+                    <a class="btn" href="{% url 'deleteProducer' id=producer.id %}" role="button">
+                    <i class="bi bi-trash-fill icon-info"></i>
+                </a>
+            </div>
+        </div>
+    </div>

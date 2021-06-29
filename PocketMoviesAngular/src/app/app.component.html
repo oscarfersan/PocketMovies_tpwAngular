@@ -1,88 +1,87 @@
 <head>
-    <meta charset="UTF-8">
-    <title>PocketMovies</title>
-  </head>
-  
-  <body style="background-color: #D3D3D3;">
-    <nav class="navbar navbar-dark bg-dark"
-      style="font-size: x-large; font-family: 'Times New Roman', Times, serif; position: fixed; width: 100%; height: 80px; z-index: 1000; border-bottom: 2px solid black;">
-      <a class="navbar-brand" href="{% url 'ListMovies' %}" style="font-size: xx-large;">Pocket Movies</a>
-      <a href="/#" class="nav-link align-right px-0" *ngIf="exists==true">
-        <i class="bi bi-person-fill"></i>
-        <span class="ms-1 d-none d-sm-inline" *ngIf="exists==true">Account</span>
-      </a>
-      <a href="/logout/" class="nav-link align-right px-0" *ngIf="exists==true">
-        <i class="bi bi-power"></i>
-        <span class="ms-1 d-none d-sm-inline" *ngIf="exists==true">Logout</span>
-      </a>
-      <a href="/login/" class="nav-link align-right px-0" *ngIf="exists==false">
-        <i class="bi bi-box-arrow-in-right"></i>
-        Login
-      </a>
-      <a href="/login/" class="nav-link align-right px-0">
-        <i class="bi bi-box-arrow-in-right"></i>
-        Login
-      </a>
-    </nav>
-  
-    <div class="container-fluid">
-      <div class="row" style="min-height: 100vh;">
-        <div class="bg-dark" style="margin-top: 80px; width: 31vh" *ngIf="exists==true">
-          <div class="px-1 pt-5 mx-1" style="position: fixed; width: 31vh">
-            <ul class="nav nav-pills flex-column" id="menu"
-              style="font-size: 25px; font-weight: bold; font-family: 'Times New Roman', Times, serif;">
-              <li class="nav-item">
-                <a href="/listMovies" class="nav-link align-middle px-0">
-                  <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Movies</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/listActors" class="nav-link align-middle px-0">
-                  <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Actors</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'ListProducers' %}" class="nav-link align-middle px-0">
-                  <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Producers</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'ListDirectors' %}" class="nav-link align-middle px-0">
-                  <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Directors</span>
-                </a>
-              </li>
-              <a href="#submenu1" data-toggle="collapse" class="nav-link px-0 align-middle"
-                style="border-top: 3px solid black">
-                <i class="bi bi-film"></i><i class="bi bi-arrow-down"><span class="ms-1 d-none d-sm-inline">My
-                    Movies</span></i>
+  <meta charset="UTF-8">
+  <title>PocketMovies</title>
+</head>
+
+<body style="background-color: #D3D3D3;">
+  <nav class="navbar navbar-dark bg-dark"
+    style="font-size: x-large; font-family: 'Times New Roman', Times, serif; position: fixed; width: 100%; height: 80px; z-index: 1000; border-bottom: 2px solid black;">
+    <a class="navbar-brand" href="{% url 'ListMovies' %}" style="font-size: xx-large;">Pocket Movies</a>
+    <a href="/#" class="nav-link align-right px-0" *ngIf="exists==true">
+      <i class="bi bi-person-fill"></i>
+      <span class="ms-1 d-none d-sm-inline" *ngIf="exists==true">Account</span>
+    </a>
+    <a routerLink="/login" class="nav-link align-right px-0" *ngIf="exists==true">
+      <i class="bi bi-power"></i>
+      <span class="ms-1 d-none d-sm-inline" *ngIf="exists==true">Logout</span>
+    </a>
+    <a routerLink="/login" class="nav-link align-right px-0">
+      <i class="bi bi-box-arrow-in-right"></i>
+      Login
+    </a>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row" style="min-height: 100vh;">
+      <div class="bg-dark" style="margin-top: 80px; width: 31vh" *ngIf="exists==true">
+        <div class="px-1 pt-5 mx-1" style="position: fixed; width: 31vh">
+          <ul class="nav nav-pills flex-column" id="menu"
+            style="font-size: 25px; font-weight: bold; font-family: 'Times New Roman', Times, serif;">
+            <li class="nav-item">
+              <a href="/listMovies" class="nav-link align-middle px-0">
+                <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Movies</span>
               </a>
-              <li>
-                <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                  <li class="w-100">
-                    <a routerLink="/personalList/MustWatch" class="nav-link px-0">
-                      <i class=" fs-8 bi bi-plus-circle"></i> <span class="d-none d-sm-inline"> Movies to Watch</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/personalList/Favorites" class="nav-link px-0">
-                      <i class=" fs-8 bi bi-heart"></i><span class="d-none d-sm-inline"> Favorite Movies</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a routerLink="/personalList/Watched" class="nav-link px-0">
-                      <i class="fs-8 bi bi-eye"></i><span class="d-none d-sm-inline"> Watched Movies </span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-  
-            </ul>
-          </div>
-        </div>
-        <div class="col py-3" style="margin-top: 80px;">
-          <!-- block content -->
-          <router-outlet></router-outlet>
+            </li>
+            <li class="nav-item">
+              <a href="/listActors" class="nav-link align-middle px-0">
+                <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Actors</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'ListProducers' %}" class="nav-link align-middle px-0">
+                <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Producers</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'ListDirectors' %}" class="nav-link align-middle px-0">
+                <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Directors</span>
+              </a>
+            </li>
+            <a href="#submenu1" data-toggle="collapse" class="nav-link px-0 align-middle"
+              style="border-top: 3px solid black">
+              <i class="bi bi-film"></i><i class="bi bi-arrow-down"><span class="ms-1 d-none d-sm-inline">My
+                  Movies</span></i>
+            </a>
+            <li>
+              <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                <li class="w-100">
+                  <a routerLink="/personalList/MustWatch" class="nav-link px-0">
+                    <i class=" fs-8 bi bi-plus-circle"></i> <span class="d-none d-sm-inline"> Movies
+                      to Watch</span>
+                  </a>
+                </li>
+                <li>
+                  <a routerLink="/personalList/Favorites" class="nav-link px-0">
+                    <i class=" fs-8 bi bi-heart"></i><span class="d-none d-sm-inline"> Favorite
+                      Movies</span>
+                  </a>
+                </li>
+                <li>
+                  <a routerLink="/personalList/Watched" class="nav-link px-0">
+                    <i class="fs-8 bi bi-eye"></i><span class="d-none d-sm-inline"> Watched Movies
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+          </ul>
         </div>
       </div>
+      <div class="col py-3" style="margin-top: 80px;">
+        <!-- block content -->
+        <router-outlet></router-outlet>
+      </div>
     </div>
-  </body>
+  </div>
+</body>

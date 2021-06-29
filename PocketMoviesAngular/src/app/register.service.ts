@@ -35,12 +35,14 @@ export class RegisterService {
                 error => { return throwError("Authentication request unsuccessful.") }
             );
     }
-
-
-    isLoggedIn() {
-    }
-
-    logout() {
-
-    }
+    // {
+    //     "user": {
+    //     "fname": "Pedro",
+    //     "lname": "Santos",
+    //     "email": "pedro.miguel50@ua.pt",
+    //     "username": "PedroS50",
+    //     "password": "pedro1234"
+    //     },
+    //     "favorite_genres": []
+    //     }
 }

@@ -17,11 +17,23 @@ export class PersonalListComponent implements OnInit {
   ngOnInit(): void {
     let listType = this.route.snapshot.params.type;
     if (listType === "Favorites") {
-      this.movieList = this.userService.fetchFavoriteMovies();
+      this.userService.fetchFavoriteMovies().subscribe(
+          value => {
+              this.movieList = value;
+          }
+      );
     } else if (listType === "Watched") {
-      this.movieList = this.userService.fetchWatchedMovies();
+        this.userService.fetchWatchedMovies().subscribe(
+            value => {
+                this.movieList = value;
+            }
+        );
     } else if (listType === "MustWatch") {
-      this.movieList = this.userService.fetchMustWatchMovies();
+        this.userService.fetchMustWatchMovies().subscribe(
+            value => {
+                this.movieList = value;
+            }
+        );
     } else {
       this.router.navigate(['/listMovies']);
     }

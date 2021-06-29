@@ -1,1 +1,5 @@
-__pycache__/
+venv/
+PocketMovies/.idea/
+PocketMovies/db.sqlite3
+**/__pycache__/
+**/migrations/
