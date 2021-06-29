@@ -46,8 +46,6 @@ urlpatterns = [
     path('delete/producer/<id>', views.deleteProducer, name="deleteProducer"),
     path('delete/movie/<id>', views.deleteMovie, name="deleteMovie"),
 
-    #to be done
-    path('search/', views.searchMovie, name="searchMovie"),
 
 
 

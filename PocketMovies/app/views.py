@@ -17,9 +17,12 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.pagination import PageNumberPagination
+
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def register_user(request):
     serializer = ProfileSerializer(data=request.data)
     data = {}
@@ -28,32 +31,14 @@ def register_user(request):
         group = Group.objects.get(name="client")
         profile.user.groups.add(group)
         token = Token.objects.get(user=profile.user).key
-        data = {'first name': profile.user.first_name, 'email': profile.user.email, 'token': token}
+        data = {'first name': profile.user.first_name, 'email': profile.user.email, 'username': profile.user.username,
+                'token': token}
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-def home(request):
-    if request.user.groups.filter(name="client").exists():
-        group = "client"
-    else:
-        group = "admin"
-    return render(request, "home.html", {"user": request.user, "group": group})
-
-
-@login_required()
-def searchMovie(request):
-    title = request.GET["title"]
-    movie = Movie.objects.filter(title__icontains=title)
-    tparams = {'movie_list': movie, 'genre_list': Genre.objects.all()}
-    return redirect('/movies/', tparams)
-
-
-# ----------------------------------------------------------------------------------
 # 'movies/<str:movie>
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -80,8 +65,10 @@ def list_movies(request, movie):
         search_term = request.data['title']
         movies = movies.filter(title__icontains=search_term)
 
-    serializer = MovieSerializer(movies, many=True)
-    return Response(serializer.data)
+    paginator = PageNumberPagination()
+    result_page = paginator.paginate_queryset(movies, request)
+    serializer = MovieSerializer(result_page, many=True)
+    return paginator.get_paginated_response(serializer.data)
 
 
 
@@ -103,21 +90,28 @@ def list_people(request, person):
         if 'title' in request.GET:
             search_term = request.GET['title']
             people = people.filter(name__icontains=search_term)
-        serializer = ActorSerializer(people, many=True)
+        paginator = PageNumberPagination()
+        result_page = paginator.paginate_queryset(people, request)
+        serializer = ActorSerializer(result_page, many=True)
     elif person == 'producers':
         people = Producer.objects.all()
         if 'title' in request.GET:
             search_term = request.GET['title']
             people = people.filter(name__icontains=search_term)
-        serializer = ProducerSerializer(people, many=True)
+        paginator = PageNumberPagination()
+        paginator.page_size = 9
+        result_page = paginator.paginate_queryset(people, request)
+        serializer = ProducerSerializer(result_page, many=True)
     elif person == 'directors':
         people = Director.objects.all()
         if 'title' in request.GET:
             search_term = request.GET['title']
             people = people.filter(name__icontains=search_term)
-        serializer = DirectorSerializer(people, many=True)
+        paginator = PageNumberPagination()
+        result_page = paginator.paginate_queryset(people, request)
+        serializer = DirectorSerializer(result_page, many=True)
 
-    return Response(serializer.data)
+    return paginator.get_paginated_response(serializer.data)
 
 
 # 'people/<str:person>/<int:id>
@@ -421,6 +415,7 @@ def addMyFavoriteMovies(request):
         return Response(status=status.HTTP_403_FORBIDDEN)
     profile.favorite_movies.add(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 # add/movies_watched/<id>
 @api_view(['POST'])
