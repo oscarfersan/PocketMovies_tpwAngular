@@ -58,12 +58,9 @@ def searchMovie(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def list_movies(request, movie):
-<<<<<<< HEAD
     ##profile = Profile.objects.get(user=User.objects.get(username=request.GET['username']))
-=======
     user = request.user
     profile = Profile.objects.get(user=user)
->>>>>>> 94dd6b8d9b34022fc3c0487babbce5dc45d6d5be
     genre = ''
     if movie == 'all':
         movies = Movie.objects.all()

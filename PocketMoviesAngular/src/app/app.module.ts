@@ -11,6 +11,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { InfoMovieComponent } from './info-movie/info-movie.component';
 import { InfoPersonComponent } from './info-person/info-person.component';
 import { InfoProducerComponent } from './info-producer/info-producer.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +21,8 @@ import { InfoProducerComponent } from './info-producer/info-producer.component';
     ListProducerComponent,
     InfoMovieComponent,
     InfoPersonComponent,
-    InfoProducerComponent
+    InfoProducerComponent,
+    ProfilePageComponent
   ],
   imports: [
     BrowserModule,
