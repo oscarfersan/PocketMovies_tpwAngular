@@ -24,14 +24,29 @@ from rest_framework.pagination import PageNumberPagination
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request):
-    serializer = RegisterSerializer(data=request.data)
+    serialized = RegisterSerializer(data=request.data)
+    if serialized.is_valid():
+        User.objects.create_user(
+            serialized.data['username'],
+            serialized.data['email'],
+            serialized.data['password'],
+        )
+        user = User.objects.get(username=serialized.data['username'])
+        token = Token.objects.get(user=user).key
+        data = {'email': user.email, 'username': user.username,
+                'token': token}
+        return Response(data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
+
+    serializer = self.get_serializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
         profile = Profile.objects.get(user=User)
         group = Group.objects.get(name="client")
         profile.user.groups.add(group)
         token = Token.objects.get(user=profile.user).key
-        data = { 'email': profile.user.email, 'username': profile.user.username,
+        data = {'email': profile.user.email, 'username': profile.user.username,
                 'token': token}
         serializer.save()
         return Response(data, status=status.HTTP_201_CREATED)
@@ -69,7 +84,6 @@ def list_movies(request, movie):
     result_page = paginator.paginate_queryset(movies, request)
     serializer = MovieSerializer(result_page, many=True)
     return paginator.get_paginated_response(serializer.data)
-
 
 
 # 'genres
@@ -170,6 +184,17 @@ def infoProfile(request):
     serializer = ProfileSerializer(profile)
     return Response(serializer.data)
 
+
+# 'edit/profile
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def editProfile(request):
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    serializer = ProfileSerializer(profile, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
 
 
 # add/actor/
@@ -431,7 +456,7 @@ def addMyFavoriteMovies(request, id):
 # add/movies_watched/<id>
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def addMoviesWatched(request,id):
+def addMoviesWatched(request, id):
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
@@ -445,7 +470,7 @@ def addMoviesWatched(request,id):
 # add/want_to_watch/<id>
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def addWantToWatch(request,id):
+def addWantToWatch(request, id):
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
