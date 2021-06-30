@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from './authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,17 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   exists:boolean = true;
-  title = 'PocketMoviesAngular';
+  title = 'Pocket Movies';
+
+  constructor(private authService: AuthenticationService) {
+
+  }
+
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
+  }
+
+  logout() {
+    this.authService.logout();
+  }
 }

@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
   font-family: "ElMessiri-SemiBold";
   src: url("../fonts/el_messiri/ElMessiri-SemiBold.ttf"); }
 @font-face {
@@ -44,10 +44,6 @@
   margin: auto;
   display: flex;
   box-shadow: 0px 0px 20px 5px #190061;
-  /* -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-  -ms-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-  -o-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2); */
 }
 
 .register-img {
@@ -330,4 +326,4 @@ h5 {
   }
 }
 
-/*# sourceMappingURL=style.css.map */
+# sourceMappingURL=style.css.map */
