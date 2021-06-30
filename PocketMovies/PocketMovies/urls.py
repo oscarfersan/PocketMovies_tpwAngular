@@ -34,6 +34,12 @@ urlpatterns = [
     path('people/<str:person>/<int:id>', views.infoPeople, name="infoProducer"),
     path('movies/<int:id>', views.infoMovie, name="infoMovie"),
     path('profile/', views.infoProfile, name="Profile"),
+    path('add/favorites/<int:id>', views.addMyFavoriteMovies, name="AddToFavorites"),
+    path('add/watched/<int:id>', views.addMoviesWatched, name="AddToWatched"),
+    path('add/want_to_watch/<int:id>', views.addWantToWatch, name="AddToWantToWatch"),
+    path('remove/favorites/<int:id>', views.deleteMyFavoriteMovies, name="RemoveToFavorites"),
+    path('remove/watched/<int:id>', views.deleteMoviesWatched, name="RemoveToWatched"),
+    path('remove/want_to_watch/<int:id>', views.deleteWantToWatch, name="RemoveToWantToWatch"),
 
     path('add/actor/', views.addActor, name="addActor"),
     path('add/director/', views.addDirector, name="addDirector"),

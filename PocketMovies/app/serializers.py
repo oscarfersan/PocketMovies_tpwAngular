@@ -35,18 +35,19 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = (
             'username', 'email','first_name','last_name','favorite_genres', 'favorite_movies', 'movies_watched', 'want_to_watch', 'imageField')
 
-class MovieSerializer(serializers.ModelSerializer):
-    cast = ActorSerializer(many=True)
-    director = DirectorSerializer(many=True)
-    producer = ProducerSerializer(many=True)
-    class Meta:
-        model = Movie
-        fields = ('id','title', 'description', 'rating', 'director', 'producer', 'cast', 'imageField', 'published_date')
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = ['name']
 
+class MovieSerializer(serializers.ModelSerializer):
+    cast = ActorSerializer(many=True)
+    director = DirectorSerializer(many=True)
+    producer = ProducerSerializer(many=True)
+    genre = GenreSerializer(many=True)
+    class Meta:
+        model = Movie
+        fields = ('id','title', 'description', 'genre', 'rating', 'director', 'producer', 'cast', 'imageField', 'published_date')
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:

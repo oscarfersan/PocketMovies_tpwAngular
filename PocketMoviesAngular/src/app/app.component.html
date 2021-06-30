@@ -24,7 +24,7 @@
   <div class="container-fluid">
     <div class="row" style="min-height: 100vh;">
       <div class="bg-dark" style="margin-top: 80px; width: 31vh" *ngIf="exists==true">
-        <div class="px-1 pt-5 mx-1" style="position: fixed; width: 31vh">
+        <div class="px-1 pt-2 mx-1" style="position: fixed; width: 31vh">
           <ul class="nav nav-pills flex-column" id="menu"
             style="font-size: 25px; font-weight: bold; font-family: 'Times New Roman', Times, serif;">
             <li class="nav-item">
@@ -42,7 +42,7 @@
                 <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Producers</span>
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item pb-3">
               <a href="{% url 'ListDirectors' %}" class="nav-link align-middle px-0">
                 <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Directors</span>
               </a>
@@ -54,6 +54,12 @@
             </a>
             <li>
               <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                <li>
+                    <a routerLink="/personalList/Watched" class="nav-link px-0">
+                      <i class="fs-8 bi bi-eye"></i><span class="d-none d-sm-inline"> Watched Movies
+                      </span>
+                    </a>
+                </li>
                 <li class="w-100">
                   <a routerLink="/personalList/MustWatch" class="nav-link px-0">
                     <i class=" fs-8 bi bi-plus-circle"></i> <span class="d-none d-sm-inline"> Movies
@@ -64,12 +70,6 @@
                   <a routerLink="/personalList/Favorites" class="nav-link px-0">
                     <i class=" fs-8 bi bi-heart"></i><span class="d-none d-sm-inline"> Favorite
                       Movies</span>
-                  </a>
-                </li>
-                <li>
-                  <a routerLink="/personalList/Watched" class="nav-link px-0">
-                    <i class="fs-8 bi bi-eye"></i><span class="d-none d-sm-inline"> Watched Movies
-                    </span>
                   </a>
                 </li>
               </ul>

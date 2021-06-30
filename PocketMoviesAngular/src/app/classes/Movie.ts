@@ -3,7 +3,7 @@ import { Person } from "./Person";
 import { Producer } from "./Producer";
 
 export class Movie{
-    // id:1;
+    id:number;
     title:string;
     description:string;
     rating:number;

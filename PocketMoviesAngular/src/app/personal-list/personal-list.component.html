@@ -49,66 +49,46 @@
                         {{ movie.description }}
                     </p>
                 </div>
-                <!-- <div class="card-footer">
+                <div class="card-footer">
                     <div>
-                        <small class="text-muted genres-movie">Genres:
-                            {% for g in movie.genre.all %}{{ g }}   {% endfor %}
+                        Genres:
+                        <small class="text-muted genres-movie" *ngFor="let g of movie.genre">{{ g.name }}
                         </small>
                     </div>
 
                     <div class="row">
                         <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
-                            {% if movie not in profile.movies_watched.all %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input name="add_movie_watched" value={{ movie.id }} hidden>
-                                    <button type="submit" class="btn"><i class="bi bi-eye icon"><h6>Watched</h6></i></button>
-                                </form>
-                            {% else %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input name="remove_movie_watched" value={{ movie.id }} hidden>
-                                    <button type="submit" class="btn"><i class="bi bi-eye-fill icon"><h6>Watched</h6></i>
-                                    </button>
-                                </form>
-                            {% endif %}
+                            <form method="post" *ngIf="movieInWatched(movie) == false">
+                                <input name="add_movie_watched" value="movie.id" hidden>
+                                <button type="button" class="btn" (click)="addToWatched(movie)"><i class="bi bi-eye icon"><h6>Watched</h6></i></button>
+                            </form>
+                            <form method="post" *ngIf="movieInWatched(movie) == true">
+                                <input name="remove_movie_watched" value="movie.id" hidden>
+                                <button type="button" class="btn" (click)="removeFromWatched(movie)"><i class="bi bi-eye-fill icon"><h6>Watched</h6></i></button>
+                            </form>
                         </div>
                         <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
-                            {% if movie not in profile.want_to_watch.all %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input name="add_want_to_watch" value={{ movie.id }} hidden>
-                                    <button type="submit" class="btn"><i class="bi bi-plus-circle icon"><h6>To Watch</h6></i>
-                                    </button>
-                                </form>
-                            {% else %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input name="remove_want_to_watch" value={{ movie.id }} hidden>
-                                    <button type="submit" class="btn"><i class="bi bi-plus-circle-fill icon"><h6>To Watch</h6></i></button>
-                                </form>
-                            {% endif %}
+                            <form method="post" *ngIf="movieInWantToWatch(movie) == false">
+                                <input name="add_want_to_watch" value="movie.id" hidden>
+                                <button type="button" class="btn" (click)="addToWantToWatch(movie)"><i class="bi bi-plus-circle icon"><h6>To Watch</h6></i></button>
+                            </form>
+                            <form method="post" *ngIf="movieInWantToWatch(movie) == true">
+                                <input name="remove_want_to_watch" value="movie.id" hidden>
+                                <button type="button" class="btn" (click)="removeFromWantToWatch(movie)"><i class="bi bi-plus-circle-fill icon"><h6>To Watch</h6></i></button>
+                            </form>
                         </div>
                         <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
-                            {% if movie not in profile.favorite_movies.all %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input name="add_favorite_movies" value={{ movie.id }} hidden>
-                                    <button type="submit" class="btn"><i class="bi bi-heart icon"><h6>Favorite</h6></i></button>
+                                <form method="post" *ngIf="movieInFavorites(movie) == false">
+                                    <input name="add_favorite_movies" value="movie.id" hidden>
+                                    <button type="button" class="btn" (click)="addToFavorites(movie)"><i class="bi bi-heart icon"><h6>Favorite</h6></i></button>
                                 </form>
-                            {% else %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input name="remove_favorite_movies" value={{ movie.id }} hidden>
-                                    <button type="submit" class="btn"><i class="bi bi-heart-fill icon"><h6>Favorite</h6></i>
-                                    </button>
+                                <form method="post" *ngIf="movieInFavorites(movie) == true">
+                                    <input name="remove_favorite_movies" value="movie.id" hidden>
+                                    <button type="button" class="btn" (click)="removeFromFavorites(movie)"><i class="bi bi-heart-fill icon"><h6>Favorite</h6></i></button>
                                 </form>
-
-                            {% endif %}
-
                         </div>
                     </div>
-                    {% if user.is_superuser %}
+                    <!-- {% if user.is_superuser %}
                     <div class="row">
                         <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
                             <a href="{% url 'editMovie' id=movie.id %}"><button type="submit" class="btn btn-outline-dark" style="width:100%;"><i class="bi bi-pencil-square"></i> Edit</button></a>
@@ -118,8 +98,8 @@
                         </div>
 
                     </div>
-                    {% endif %}
-                </div> -->
+                    {% endif %} -->
+                </div>
             </div>
         </div>
     </div>

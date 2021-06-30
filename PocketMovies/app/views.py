@@ -424,6 +424,7 @@ def deleteWantToWatch(request, id):
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def addMyFavoriteMovies(request, id):
+    print("Im here")
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
