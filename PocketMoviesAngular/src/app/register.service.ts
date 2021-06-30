@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { Genre } from './classes/Genre';
+import { User } from './classes/User';
 
 @Injectable({
     providedIn: 'root'
@@ -19,15 +20,16 @@ export class RegisterService {
     };
 
     constructor(private http: HttpClient, private router: Router) {
-        this.loginUrl = environment.baseUrl + '/register';
+        this.loginUrl = environment.baseUrl + '/register/';
     }
 
-    register(firstName: string, lastName: string, email: string, password: string, favoriteGenres: Genre[]) {
-        this.http.post<string>(this.loginUrl, { 'firstName': firstName, 'lastName': lastName, 'email': email, 'password': password, 'favoriteGenres': favoriteGenres }, this.httpOptions)
+    register(newUser: User) {
+        this.http.post<string>(this.loginUrl, newUser, this.httpOptions)
             .subscribe(
                 value => {
                     if (value != null) {
                         this.router.navigate(['/login']);
+                        console.log(value);
                     } else {
                         window.alert("Invalid credentials!");
                     }

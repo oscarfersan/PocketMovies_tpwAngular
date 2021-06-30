@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { User } from '../classes/User';
 import { RegisterService } from '../register.service';
 
 @Component({
@@ -31,12 +32,12 @@ export class SignupComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.signupForm.get("inputFirstName").invalid || this.signupForm.get("inputLastName").invalid || this.signupForm.get("inputEmail").invalid || this.signupForm.get("inputPassword1").invalid|| this.signupForm.get("inputPassword2").invalid || this.passwordsDontMatch) {
+    if (this.signupForm.get("inputFName").invalid || this.signupForm.get("inputLName").invalid || this.signupForm.get("inputEmail").invalid || this.signupForm.get("inputPassword1").invalid || this.signupForm.get("inputPassword2").invalid || this.passwordsDontMatch) {
       window.alert("Please fill in all required fields with valid information.");
       return;
     }
 
-    // this.regService.register();
+    this.regService.register(new User(this.signupForm.get("inputFName").value, this.signupForm.get("inputLName").value, this.signupForm.get("inputUsername").value, this.signupForm.get("inputEmail").value, this.signupForm.get("inputPassword1").value));
   }
 
 }

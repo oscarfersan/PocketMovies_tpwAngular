@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from app.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -26,17 +27,24 @@ from rest_framework.pagination import PageNumberPagination
 def register_user(request):
     serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
+        password = serializer.validated_data.get('password')
+        serializer.validated_data['password']=make_password(password)
         user = serializer.save()
-        profile = Profile.objects.get(user=User)
+        profile = Profile.objects.get(user=user)
         group = Group.objects.get(name="client")
         profile.user.groups.add(group)
-        token = Token.objects.get(user=profile.user).key
-        data = { 'email': profile.user.email, 'username': profile.user.username,
-                'token': token}
+        data = { 'email': profile.user.email, 'username': profile.user.username}
         serializer.save()
         return Response(data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getPermissions(request):
+    reqUser = request.user
+
+    return Response( data={'admin': reqUser.is_superuser} )
 
 
 # 'movies/<str:movie>

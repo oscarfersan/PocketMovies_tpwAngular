@@ -11,22 +11,37 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthenticationService {
 
   private loginUrl: string;
+  private permissionsUrl: string;
+  private isSuperuser: boolean = false;
 
-  private headers = new HttpHeaders({'Content-Type': 'application/json'});
-  private params;
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
   constructor(private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
-    this.loginUrl = environment.baseUrl + '/login';
+    this.loginUrl = environment.baseUrl + '/login/';
+    this.permissionsUrl = environment.baseUrl + '/permissions/';
   }
 
   login(username: string, password: string) {
-      this.params = new HttpParams().set("username",username).set("password", password);
-    this.http.get<string>(this.loginUrl, {headers: this.headers, params: this.params})
+    this.http.post(this.loginUrl, { username: username, password: password }, this.httpOptions)
       .subscribe(
         value => {
           if (value != null) {
-            localStorage.setItem('token', value);
-            this.router.navigate(['/home']);
+            let receivedToken = value["token"];
+            localStorage.setItem('token', receivedToken);
+            this.router.navigate(['/listMovies/all']);
+
+            let permHttpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'JWT ' + receivedToken }) };
+            this.http.get(this.permissionsUrl, permHttpOptions).subscribe(
+              value => {
+                console.log(value["admin"]);
+                this.isSuperuser = value["admin"];
+              }
+            );
+
           } else {
             window.alert("Invalid credentials!");
           }
@@ -49,7 +64,12 @@ export class AuthenticationService {
     return false;
   }
 
+  isSuperUser() {
+    return this.isSuperuser
+  }
+
   logout() {
     localStorage.removeItem("token");
+    this.isSuperuser = false;
   }
 }

@@ -19,13 +19,15 @@ from app import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from rest_framework.authtoken import views as fviews
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 urlpatterns = [
     path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('admin/', admin.site.urls),
-    path('login/', fviews.obtain_auth_token, name='Login'),
     path('register/', views.register_user, name='Register'),
+    path('login/', obtain_jwt_token, name='Login'),
+    path('refresh-token/', refresh_jwt_token),
+    path('permissions/', views.getPermissions),
     path('genres/', views.list_genres, name='Genres'),
     path('movies/<str:movie>', views.list_movies, name='ListMovies'),
     path('people/<str:person>', views.list_people, name='ListActors'),

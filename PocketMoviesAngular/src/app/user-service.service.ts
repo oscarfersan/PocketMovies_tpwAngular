@@ -16,7 +16,7 @@ export class UserServiceService {
     private httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
-            'Authorization': 'token ' + this.authenticationService.getToken()
+            'Authorization': 'JWT ' + this.authenticationService.getToken()
         })
     };
 
@@ -25,15 +25,15 @@ export class UserServiceService {
     }
 
     fetchFavoriteMovies(): Observable<Movie[]> {
-        return this.http.get<Movie[]>(this.moviesUrl + '/my_favorite_movies');
+        return this.http.get<Movie[]>(this.moviesUrl + '/my_favorite_movies', this.httpOptions);
     }
 
     fetchWatchedMovies(): Observable<Movie[]> {
-        return this.http.get<Movie[]>(this.moviesUrl + '/my_watched_movies');
+        return this.http.get<Movie[]>(this.moviesUrl + '/my_watched_movies', this.httpOptions);
     }
 
     fetchMustWatchMovies(): Observable<Movie[]> {
-        return this.http.get<Movie[]>(this.moviesUrl + '/my_want_to_watch');
+        return this.http.get<Movie[]>(this.moviesUrl + '/my_want_to_watch', this.httpOptions);
     }
 
 }

@@ -21,7 +21,7 @@ export class ListMoviesComponent implements OnInit {
   getMovies(){
     this.param = this.route.snapshot.paramMap.get('type');
     this.movieService.getMovies(this.param).subscribe(list=>{
-      this.movie_list=list
+      this.movie_list=list["results"];
     });
     
   }
