@@ -1,11 +1,9 @@
 <div class="container-fluid">
     <div class="col">
         <div class="row mt-2 align-items-center">
-            <!-- <div class="col">
-                    {% if user.is_superuser %}
+            <div class="col" *ngIf="checkSuperUser()">
                     <a href="{% url 'addMovie' %}"><button style="width: 30vh; height: 6vh;" class="btn btn-outline-dark"><i class="bi bi-pencil-square"></i>Add New Movie</button></a>
-                    {% endif %}
-                </div> -->
+                </div>
             <div class="col">
                 <form action="." method="get" autocomplete="off" style="float:right">
                     <div class="mt-3">

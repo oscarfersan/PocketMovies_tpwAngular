@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-export class User{
-    id:number;
-    username:string;
-    first_name:string;
-    last_name:string;
-    email:string;
-    token:string;
-    genre:string;
-    imageField:string;
-=======
 import { Genre } from "./Genre";
 import { Movie } from "./Movie";
 
@@ -30,5 +19,4 @@ export class User {
         this.email = email;
         this.password = password;
     }
->>>>>>> c146b1f6fa46ed68988955f1d43515766c625cad
 }

@@ -10,6 +10,7 @@ export class MovieServiceService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
+      'Accept': 'application/json, text/plain, */*',
       'Authorization': 'JWT ' + this.authService.getToken()
     })
   };

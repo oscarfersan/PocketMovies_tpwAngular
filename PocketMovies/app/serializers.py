@@ -47,15 +47,7 @@ class MovieSerializer(serializers.ModelSerializer):
     genre = GenreSerializer(many=True)
     class Meta:
         model = Movie
-<<<<<<< HEAD
-        fields = ('id','title', 'description', 'rating', 'director', 'producer', 'cast', 'imageField', 'published_date')
-
-class GenreSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Genre
-        fields = ['name']
-=======
-        fields = ('id','title', 'description', 'genre', 'rating', 'director', 'producer', 'cast', 'imageField', 'published_date')
+        fields = ('id','title', 'description', 'rating', 'director', 'producer', 'cast','genre','imageField', 'published_date')
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,4 +59,3 @@ class RegisterSerializer(serializers.ModelSerializer):
         profile = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
 
         return profile
->>>>>>> c146b1f6fa46ed68988955f1d43515766c625cad

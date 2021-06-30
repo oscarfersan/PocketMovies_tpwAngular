@@ -51,10 +51,6 @@ def getPermissions(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def list_movies(request, movie):
-<<<<<<< HEAD
-    ##profile = Profile.objects.get(user=User.objects.get(username=request.GET['username']))
-=======
->>>>>>> c146b1f6fa46ed68988955f1d43515766c625cad
     user = request.user
     profile = Profile.objects.get(user=user)
     genre = ''

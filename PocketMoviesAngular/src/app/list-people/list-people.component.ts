@@ -18,12 +18,8 @@ export class ListPeopleComponent implements OnInit {
   }
   getPeople():void{
     this.person_role = this.route.snapshot.paramMap.get('type');
-    console.log(this.person_role);
     this.peopleService.getPeople(this.person_role.valueOf()).subscribe(actors=>{
-      this.person_list=actors;
-      actors.forEach((i)=>{
-        console.log(i);
-      })
+      this.person_list=actors["results"];
     });
   }
 }

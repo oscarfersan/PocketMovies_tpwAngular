@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../classes/User';
+import { UserServiceService } from '../user-service.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -8,19 +10,29 @@ import { User } from '../classes/User';
 })
 export class ProfilePageComponent implements OnInit {
 
-  user:User={
-    id:1,
-    username:'aux',
-    email:'aux@gmail.com',
-    first_name:'AUX',
-    last_name:'AUX',
-    genre:'Action',
-    imageField:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog',
-    token:'1234',
+  user:User;
+  editing:boolean;
+  editForm = new FormGroup({
+    editUsername:new FormControl('',[Validators.required]),
+    editFName: new FormControl('', [Validators.required]),
+    editLName: new FormControl('', [Validators.required]),
+    editEmail: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")])
+  })
+  constructor(private userService:UserServiceService) {
+    this.editing = false;
   }
-  constructor() { }
 
   ngOnInit(): void {
+    this.userService.getCurrentUser().subscribe((data)=>{
+      this.user = data;
+    });
+  }
+  update(){
+    this.user.username = this.editForm.get("editUsername").value;
+    this.user.firstName = this.editForm.get("editFName").value;
+    this.user.lastName = this.editForm.get("editLName").value;
+    this.user.email = this.editForm.get("editEmail").value;
+    this.editing = false;
   }
 
 }

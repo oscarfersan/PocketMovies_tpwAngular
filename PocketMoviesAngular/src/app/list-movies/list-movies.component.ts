@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
 import { Genre } from '../classes/Genre';
 import { Movie } from '../classes/Movie';
 import { MovieServiceService } from '../movie-service.service';
@@ -14,10 +15,13 @@ export class ListMoviesComponent implements OnInit {
   movie_list:Movie[];
   genre_list:Genre[];
   param:string;
-  constructor(private movieService: MovieServiceService,private route: ActivatedRoute, private userService: UserServiceService) { }
+  constructor(private movieService: MovieServiceService,private route: ActivatedRoute, private userService: UserServiceService, private auth:AuthenticationService) { }
 
   ngOnInit(): void {
     this.getMovies();
+  }
+  checkSuperUser():boolean{
+    return this.auth.isSuperUser();
   }
   getMovies(){
     this.param = this.route.snapshot.paramMap.get('type');

@@ -7,7 +7,7 @@
   <nav class="navbar navbar-dark bg-dark"
     style="font-size: x-large; font-family: 'Times New Roman', Times, serif; position: fixed; width: 100%; height: 80px; z-index: 1000; border-bottom: 2px solid black;">
     <a class="navbar-brand" routerLink="/listMovies/all" style="font-size: xx-large;">Pocket Movies</a>
-    <a href="/#" class="nav-link align-right px-0" *ngIf="isLoggedIn()">
+    <a href="/profile" class="nav-link align-right px-0" *ngIf="isLoggedIn()">
       <i class="bi bi-person-fill"></i>
       <span class="ms-1 d-none d-sm-inline">Account</span>
     </a>
@@ -33,17 +33,17 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="/listActors" class="nav-link align-middle px-0">
+              <a href="/listPeople/actors" class="nav-link align-middle px-0">
                 <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Actors</span>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{% url 'ListProducers' %}" class="nav-link align-middle px-0">
+              <a href="/listProducers" class="nav-link align-middle px-0">
                 <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Producers</span>
               </a>
             </li>
             <li class="nav-item pb-3">
-              <a href="{% url 'ListDirectors' %}" class="nav-link align-middle px-0">
+              <a href="/listPeople/directors" class="nav-link align-middle px-0">
                 <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Directors</span>
               </a>
             </li>
