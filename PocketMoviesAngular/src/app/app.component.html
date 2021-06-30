@@ -33,17 +33,17 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="/listActors" class="nav-link align-middle px-0">
+              <a routerLink="/listPeople/actors" class="nav-link align-middle px-0">
                 <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Actors</span>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{% url 'ListProducers' %}" class="nav-link align-middle px-0">
+              <a routerLink="/listPeople/producers" class="nav-link align-middle px-0">
                 <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Producers</span>
               </a>
             </li>
             <li class="nav-item pb-3">
-              <a href="{% url 'ListDirectors' %}" class="nav-link align-middle px-0">
+              <a routerLink="/listPeople/directors" class="nav-link align-middle px-0">
                 <i class=" fs-4 bi bi-arrow-right-short"></i><span class="ms-1 d-none d-sm-inline">Directors</span>
               </a>
             </li>
@@ -55,19 +55,19 @@
             <li>
               <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                 <li>
-                    <a routerLink="/personalList/Watched" class="nav-link px-0">
+                    <a routerLink="/listMovies/watched" class="nav-link px-0">
                       <i class="fs-8 bi bi-eye"></i><span class="d-none d-sm-inline"> Watched Movies
                       </span>
                     </a>
                 </li>
                 <li class="w-100">
-                  <a routerLink="/personalList/MustWatch" class="nav-link px-0">
+                  <a routerLink="/listMovies/mustWatch" class="nav-link px-0">
                     <i class=" fs-8 bi bi-plus-circle"></i> <span class="d-none d-sm-inline"> Movies
                       to Watch</span>
                   </a>
                 </li>
                 <li>
-                  <a routerLink="/personalList/Favorites" class="nav-link px-0">
+                  <a routerLink="/listMovies/favorites" class="nav-link px-0">
                     <i class=" fs-8 bi bi-heart"></i><span class="d-none d-sm-inline"> Favorite
                       Movies</span>
                   </a>

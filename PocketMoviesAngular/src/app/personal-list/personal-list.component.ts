@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { Movie } from '../classes/Movie';
+import { MovieServiceService } from '../movie-service.service';
 import { UserServiceService } from '../user-service.service';
 
 @Component({
@@ -13,34 +14,34 @@ export class PersonalListComponent implements OnInit {
 
   movieList: Movie[];
 
-  constructor(private router: Router, private route: ActivatedRoute, private userService: UserServiceService, private authService: AuthenticationService) {}
+  constructor(private router: Router, private route: ActivatedRoute, private movieService: MovieServiceService, private userService: UserServiceService, private authService: AuthenticationService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      if (params.type === "Favorites") {
-        this.userService.fetchFavoriteMovies().subscribe(
-          value => {
-            this.movieList = value["results"];
-            this.userService.setFavorites(value["results"]);
-          }
-        );
-      } else if (params.type === "Watched") {
-        this.userService.fetchWatchedMovies().subscribe(
-          value => {
-            this.movieList = value["results"];
-            this.userService.setWatched(value["results"]);
-          }
-        );
-      } else if (params.type === "MustWatch") {
-        this.userService.fetchMustWatchMovies().subscribe(
-          value => {
-            this.movieList = value["results"];
-            this.userService.setWantToWatch(value["results"]);
-          }
-        );
-      } else {
-        this.router.navigate(['/listMovies/all']);
-      }
+    //   if (params.type === "Favorites") {
+    //     this.movieService.getMovies("my_favorite_movies").subscribe(
+    //       value => {
+    //         this.movieList = value["results"];
+    //         this.userService.setFavorites(value["results"]);
+    //       }
+    //     );
+    //   } else if (params.type === "Watched") {
+    //     this.movieService.getMovies("my_watched_movies").subscribe(
+    //       value => {
+    //         this.movieList = value["results"];
+    //         this.userService.setWatched(value["results"]);
+    //       }
+    //     );
+    //   } else if (params.type === "MustWatch") {
+    //     this.movieService.getMovies("my_want_to_watch").subscribe(
+    //       value => {
+    //         this.movieList = value["results"];
+    //         this.userService.setWantToWatch(value["results"]);
+    //       }
+    //     );
+    //   } else {
+    //     this.router.navigate(['/listMovies/all']);
+    //   }
     })
     
   }

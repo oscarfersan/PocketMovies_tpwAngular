@@ -1,6 +1,7 @@
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { environment } from 'src/environments/environment';
 import { AuthenticationService } from './authentication.service';
 import { Movie } from './classes/Movie';
 
@@ -14,16 +15,16 @@ export class MovieServiceService {
       'Authorization': 'JWT ' + this.authService.getToken()
     })
   };
-  private baseURL = 'http://localhost:8000/';
+  //private baseURL = 'http://localhost:8000/';
 
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
-  getMovies(param: string): Observable<Movie[]> {
-    const url = this.baseURL + 'movies/' + param;
-    return this.http.get<Movie[]>(url, this.httpOptions);
+  getMovies(movieUrl: string): Observable<Movie[]> {
+    //const url = this.baseURL + 'movies/' + param;
+    return this.http.get<Movie[]>(movieUrl, this.httpOptions);
   }
   getSelected(id: number): Observable<Movie> {
-    const url = this.baseURL + 'movies/info/' + id;
+    const url = environment.baseUrl + 'movies/info/' + id;
     return this.http.get<Movie>(url, this.httpOptions);
   }
 }

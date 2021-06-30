@@ -51,22 +51,6 @@ export class AuthenticationService {
                 }
             );
 
-            this.userService.fetchFavoriteMovies().subscribe( 
-                value => {
-                    this.userService.setFavorites(value["results"]);
-                }
-            );
-            this.userService.fetchWatchedMovies().subscribe( 
-                value => {
-                    this.userService.setWatched(value["results"]);
-                }
-            );
-            this.userService.fetchMustWatchMovies().subscribe( 
-                value => {
-                    this.userService.setWantToWatch(value["results"]);
-                }
-            );
-
           } else {
             window.alert("Invalid credentials!");
           }
