@@ -1,0 +1,39 @@
+<div class="inner" style="background-color: #282828 !important;">
+    <div class="register-image-holder">
+        <img class="register-img" src="../../assets/imgs/movie.jpg" alt="">
+    </div>
+
+    <form [formGroup]="signupForm" class="main-form">
+        <div class="form-group">
+            <h3>Sign Up</h3>
+            <div class="form-holder">
+                <input id="registerFName" type="text" class="form-control" formControlName="inputFName" placeholder="First Name"/>
+            </div>
+            <div class="form-holder">
+                <input id="registerLName" type="text" class="form-control" formControlName="inputLName" placeholder="Last Name"/>
+            </div>
+            <div class="form-holder">
+                <input id="registerUsername" type="text" class="form-control" formControlName="inputUsername" placeholder="Username"/>
+            </div>
+            <div class="form-holder">
+                <input id="registerEmail" type="email" class="form-control" formControlName="inputEmail" placeholder="Email"/>
+            </div>
+            <div class="form-holder">
+                <input id="registerPassword1" type="password" class="form-control" formControlName="inputPassword1" placeholder="Password"/>
+            </div>
+            <div class="form-holder">
+                <input id="registerPassword2" type="password" class="form-control" formControlName="inputPassword2" placeholder="Password Confirmation"/>
+            </div>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" checked> I agree with all statements in <a class="signup-a" href="#">Terms & Conditions</a>
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div class="form-login">
+            <button class="signup-btn" type="button" (click)="submitForm()">Sign up</button>
+            <p>Already Have account? <a class="signup-a" routerLink="/login">Login</a></p>
+        </div>
+    </form>
+</div>
