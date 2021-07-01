@@ -17,16 +17,14 @@
         </div>
         <div class="row w-25">
             <div class="col">
-                <a class="btn" href="{% url 'editProducer' id=producer.id %}" role="button">
+                <a class="btn" (click)="editPerson(producer)" role="button">
                     <i class="bi bi-pencil-fill icon-info"></i>
                 </a>
             </div>
             <div class="col">
-                <!-- <a class="btn" href="{% url 'deleteProducer' id=producer.id %}" role="button"
-                    onclick="return confirm('Are you sure you want to delete {{ producer }}?');"> -->
-                    <a class="btn" href="{% url 'deleteProducer' id=producer.id %}" role="button">
+                <button class="btn" (click)="deletePerson(producer)">
                     <i class="bi bi-trash-fill icon-info"></i>
-                </a>
+                </button>
             </div>
         </div>
     </div>

@@ -51,9 +51,8 @@ export class PeopleServiceService {
     return this.selectedPerson;
   }
 
-  getPeople(param: string): Observable<Person[]> {
-    const url = environment.baseUrl + '/people/' + param;
-    return this.http.get<Person[]>(url, this.httpOptions);
+  getPeople(param: string, peopleUrl: string): Observable<Person[]> {
+    return this.http.get<Person[]>(peopleUrl, this.httpOptions);
   }
   getSelected(param: string, id: number): Observable<Person> {
     const url = environment.baseUrl + '/people/' + param + '/' + id;

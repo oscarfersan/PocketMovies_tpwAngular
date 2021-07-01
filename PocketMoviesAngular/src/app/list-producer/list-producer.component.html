@@ -1,23 +1,8 @@
 <div class="container">
     <h3>PRODUCERS</h3>
     <div class="row mt-2 align-items-center">
-        <!-- <div class="col">
-            {% if producer_role == "ACTOR" %}
-                <a href="{% url 'addActor' %}">
-            {% endif %}
-            {% if producer_role == "PRODUCER" %}
-                <a href="{% url 'addProducer' %}">
-            {% endif %}
-            {% if producer_role == "DIRECTOR" %}
-                <a href="{% url 'addDirector' %}">
-            {% endif %}
-             {% if user.is_superuser %}
-            <button style="width: 30vh; height: 6vh;" class="btn btn-outline-dark"><i class="bi bi-pencil-square"></i>Add New {{ producer_role }}</button></a>
-            {% endif %}
-        </div> -->
         <div class="col">
             <form action="." method="get" autocomplete="off" style="float:right">
-                <!-- {% csrf_token %} -->
                 <div class="mt-3">
                     <div class="input-group mb-3">
                         <button class="btn btn-outline-success" type="submit"><i class="bi bi-search icon"></i></button>
@@ -29,7 +14,6 @@
         </div>
     </div>
     <div class="pb-5">
-        <!-- {% for producer in producer_list %} -->
         <div class="col" *ngFor="let producer of producer_list">
             <div class="card mb-4 my_class card-shadow">
                 <a routerLink="/producer/{{producer.id}}"

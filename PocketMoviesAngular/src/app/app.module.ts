@@ -20,10 +20,12 @@ import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
 import { EditPersonComponent } from './edit-person/edit-person.component';
 import { AddPersonComponent } from './add-person/add-person.component';
+
 export function tokenGetter() {
     return localStorage.getItem("token");
   }
-@NgModule({
+
+  @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
@@ -35,7 +37,6 @@ export function tokenGetter() {
     InfoPersonComponent,
     InfoProducerComponent,
     SignupComponent,
-    PersonalListComponent,
     ProfilePageComponent,
     SignupComponent, EditMovieComponent, AddMovieComponent, EditPersonComponent, AddPersonComponent,
   ],
