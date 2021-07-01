@@ -37,10 +37,10 @@
                 <input type="text" [(ngModel)]="person.imageField" class="form-control" aria-describedby="imageField" placeholder="Image Url">
             </div>
         </div>
-        <div class="col-*-* mx-auto outter-input-group" *ngIf="type=='directors'">
+        <div class="col-*-* mx-auto outter-input-group" *ngIf="type=='directors' || type=='producers'">
             <div class="input-group mb-3">
                 <span id="website" class="input-group-text justify-content-center">Website:</span>
-                <input type="text" [(ngModel)]="person.website" class="form-control" aria-describedby="website" placeholder="Website">
+                <input type="text" [(ngModel)]="website" class="form-control" aria-describedby="website" placeholder="Website">
             </div>
         </div>
     </div>

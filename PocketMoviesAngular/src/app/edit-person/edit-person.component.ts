@@ -16,9 +16,8 @@ export class EditPersonComponent implements OnInit {
 
   ngOnInit(): void {
     this.person = this.peopleService.getSelectedPerson;
-    console.log(this.person)
-    let id = +this.route.snapshot.paramMap.get('id');
     this.type = this.route.snapshot.paramMap.get('type');
+    let id = +this.route.snapshot.paramMap.get('id');
     if (id != this.person.id)
       this.router.navigate([`/${this.type}/${id}`]);
   }
@@ -34,6 +33,7 @@ export class EditPersonComponent implements OnInit {
       });
     if (this.type=="directors")
       this.peopleService.editDirector(this.person).subscribe(value=>{
+        console.log(value);
         this.router.navigate(['/person/' + this.type + '/' + this.person.id]);
         window.alert("Director successfully edited.");
       },

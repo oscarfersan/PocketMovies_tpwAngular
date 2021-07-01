@@ -28,23 +28,24 @@ def register_user(request):
     serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
         password = serializer.validated_data.get('password')
-        serializer.validated_data['password']=make_password(password)
+        serializer.validated_data['password'] = make_password(password)
         user = serializer.save()
         profile = Profile.objects.get(user=user)
         group = Group.objects.get(name="client")
         profile.user.groups.add(group)
-        data = { 'email': profile.user.email, 'username': profile.user.username}
+        data = {'email': profile.user.email, 'username': profile.user.username}
         serializer.save()
         return Response(data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getPermissions(request):
     reqUser = request.user
 
-    return Response( data={'admin': reqUser.is_superuser} )
+    return Response(data={'admin': reqUser.is_superuser})
 
 
 # 'movies/<str:movie>
@@ -77,7 +78,6 @@ def list_movies(request, movie):
     result_page = paginator.paginate_queryset(movies, request)
     serializer = MovieSerializer(result_page, many=True)
     return paginator.get_paginated_response(serializer.data)
-
 
 
 # 'genres
@@ -179,7 +179,6 @@ def infoProfile(request):
     return Response(serializer.data)
 
 
-
 # add/actor/
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -264,7 +263,7 @@ def editDirector(request, id):
         director = Director.objects.get(id=id)
     except Director.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    serializer = ActorSerializer(director, data=request.data)
+    serializer = DirectorSerializer(director, data=request.data)
     user = request.user
     if user.groups.filter(name="client").exists():
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -440,7 +439,7 @@ def addMyFavoriteMovies(request, id):
 # add/movies_watched/<id>
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def addMoviesWatched(request,id):
+def addMoviesWatched(request, id):
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
@@ -454,7 +453,7 @@ def addMoviesWatched(request,id):
 # add/want_to_watch/<id>
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def addWantToWatch(request,id):
+def addWantToWatch(request, id):
     try:
         movie = Movie.objects.get(id=id)
         user = request.user

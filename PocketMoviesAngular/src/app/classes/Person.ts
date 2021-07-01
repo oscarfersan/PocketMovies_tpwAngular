@@ -1,7 +1,7 @@
 export class Person{
     id:number;
     name:string;
-    birthdate:Date;
+    birthdate:string;
     nationality:string;
     imageField:string;
     twitterAccount:string;
