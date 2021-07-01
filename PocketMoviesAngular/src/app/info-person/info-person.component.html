@@ -14,7 +14,7 @@
             <img src="{{ person.imageField }}" class="person-image">
         </div>
         <!-- {% if group == "admin" %} -->
-        <div class="row w-25">
+        <div class="row w-25" *ngIf="isSuperUser()">
             <div class="col">
                 <button class="btn" (click)="editPerson(person)" style="cursor: pointer;">
                     <i class="bi bi-pencil-fill icon-info"></i>

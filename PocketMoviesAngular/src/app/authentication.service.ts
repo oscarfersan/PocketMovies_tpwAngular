@@ -36,9 +36,7 @@ export class AuthenticationService {
           if (value != null) {
             let receivedToken = value["token"];
             localStorage.setItem('token', receivedToken);
-            console.log(receivedToken);
-            this.router.navigate(['/listMovies/all']);
-
+            
             let permHttpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'JWT ' + receivedToken }) };
             this.http.get(this.permissionsUrl, permHttpOptions).subscribe(
               value => {
@@ -52,7 +50,7 @@ export class AuthenticationService {
                     this.userService.setCurrentUser(value);
                 }
             );
-
+            this.router.navigate(['/listMovies/all']);
           } else {
             window.alert("Invalid credentials!");
           }

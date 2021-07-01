@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
 import { Person } from '../classes/Person';
 import { PeopleServiceService } from '../people-service.service';
 
@@ -12,7 +13,7 @@ export class InfoPersonComponent implements OnInit {
 
   type:string;
   person:Person;
-  constructor(private personService:PeopleServiceService,private route:ActivatedRoute, private router: Router) { }
+  constructor(private personService:PeopleServiceService,private route:ActivatedRoute, private router: Router, private authService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.getPerson();
@@ -22,6 +23,11 @@ export class InfoPersonComponent implements OnInit {
     this.type = this.route.snapshot.paramMap.get('type');
     this.personService.getSelected(this.type,id).subscribe((data)=>this.person = data);
   }
+
+  isSuperUser() {
+    return this.authService.isSuperUser();
+  }
+
 
   editPerson(person: Person) {
     this.personService.setSelectedPerson(person);
