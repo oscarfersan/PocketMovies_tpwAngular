@@ -1,21 +1,11 @@
 from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import User
-from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from rest_framework.authtoken.models import Token
 from django.dispatch import receiver
-from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail
-
-
-# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-# def create_auth_token(sender, instance=None, created=False, **kwargs):
-#     if created:
-#         Token.objects.create(user=instance)
-
 
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
@@ -28,7 +18,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         # message:
         email_plaintext_message,
         # from:
-        "marta.martocas@hotmail.com",
+        "pocketmoviesapp@gmail.com",
         # to:
         [reset_password_token.user.email]
     )
@@ -38,7 +28,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
 class Actor(models.Model):
     name = models.CharField(max_length=255)
     birthdate = models.DateField()
-    years_active = models.IntegerField()
+    years_active = models.IntegerField(blank=True)
     nationality = models.CharField(max_length=50)
     imageField = models.URLField(blank=True)
     twitterAccount = models.CharField(max_length=255, blank=True)
@@ -112,3 +102,4 @@ class Profile(models.Model):
         if created:
             Profile.objects.create(user=instance)
         instance.profile.save()
+

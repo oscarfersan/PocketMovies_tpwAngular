@@ -43,29 +43,33 @@
       </div>
     </div>
   </div>
-
-  <!-- <nav aria-label="Page navigation" style="position: absolute; bottom: 0; right:50vh; left:50vh;">
-    <ul class="pagination justify-content-center">
-      <li class="page-item" *ngIf="getPrevious != null">
-        <a class="page-link" (click)="getPreviousMovies()">Previous</a>
-      </li>
-      <li class="page-item disabled" *ngIf="getPrevious == null">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-      </li>
-      <div *ngFor="let pageN of getPageRange">
-        <li class="page-item active" aria-current="page" *ngIf="pageN==getActivePage">
-          <span class="page-link">
-            {{ i }}
-          </span>
-        </li>
-        <li class="page-item"><a class="page-link" (click)="getPageMovies(pageN)" *ngIf="i!=getActivePage">{{ i }}</a></li>
-      </div>
-      <li class="page-item" *ngIf="getNext != null">
-        <a class="page-link" (click)="getNextMovies()">Next</a>
-      </li>
-      <li class="page-item disabled" *ngIf="getNext == null">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
-      </li>
-    </ul>
-  </nav> -->
 </div>
+
+<nav aria-label="Page navigation" style="position: absolute; bottom: 0; right:50vh; left:50vh;">
+  <ul class="pagination justify-content-center">
+    <li class="page-item" *ngIf="getPrevious != null" style="cursor: pointer;">
+      <a class="page-link" (click)="getPreviousPeople()">Previous</a>
+    </li>
+    <li class="page-item disabled" *ngIf="getPrevious == null">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+    </li>
+    <div *ngFor="let pageN of getPageRange">
+      <li class="page-item active" aria-current="page" *ngIf="pageN==getActivePage">
+        <span class="page-link">
+          {{ pageN }}
+        </span>
+      </li>
+      <li class="page-item" *ngIf="pageN!=getActivePage" style="cursor: pointer;">
+        <a class="page-link" (click)="getPagePeople(pageN)">
+          {{ pageN }}
+        </a>
+      </li>
+    </div>
+    <li class="page-item" *ngIf="getNext != null" style="cursor: pointer;">
+      <a class="page-link" (click)="getNextPeople()">Next</a>
+    </li>
+    <li class="page-item disabled" *ngIf="getNext == null">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+    </li>
+  </ul>
+</nav>

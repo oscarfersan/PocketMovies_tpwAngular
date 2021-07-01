@@ -39,13 +39,13 @@ def register_user(request):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getPermissions(request):
     reqUser = request.user
 
-    return Response( data={'admin': reqUser.is_superuser} )
-
+    return Response(data={'admin': reqUser.is_superuser})
 
 # 'movies/<str:movie>
 @api_view(['GET'])
@@ -63,13 +63,13 @@ def list_movies(request, movie):
     elif movie == 'my_watched_movies':
         movies = profile.movies_watched.all()
 
-    if 'genre' in request.GET:
-        genre = request.GET['genre']
+    if 'genre' in request.data:
+        genre = request.data['genre']
         if genre and genre != "All":
             genre_object = Genre.objects.get(name=genre)
             movies = movies.filter(genre=genre_object)
 
-    if 'title' in request.GET:
+    if 'title' in request.data:
         search_term = request.data['title']
         movies = movies.filter(title__icontains=search_term)
 
@@ -77,7 +77,6 @@ def list_movies(request, movie):
     result_page = paginator.paginate_queryset(movies, request)
     serializer = MovieSerializer(result_page, many=True)
     return paginator.get_paginated_response(serializer.data)
-
 
 
 # 'genres
@@ -165,7 +164,7 @@ def infoMovie(request, id):
         return Response(serializer.data)
     except:
         movie = None
-        serializer = ActorSerializer(movie)
+        serializer = MovieSerializer(movie)
         return Response(serializer.data)
 
 
@@ -178,8 +177,16 @@ def infoProfile(request):
     serializer = ProfileSerializer(profile)
     return Response(serializer.data)
 
-
-
+# 'edit/profile
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def editProfile(request):
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    serializer = ProfileSerializer(profile, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
 # add/actor/
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -270,7 +277,6 @@ def editDirector(request, id):
     except Director.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = DirectorSerializer(director, data=request.data)
-
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
@@ -302,7 +308,6 @@ def editProducer(request, id):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def editMovie(request, id):
-    print(request.data)
     if not request.user.is_staff:
         return Response(status=status.HTTP_403_FORBIDDEN)
 
@@ -316,7 +321,7 @@ def editMovie(request, id):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
-    print(serializer.errors)
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -437,7 +442,6 @@ def deleteWantToWatch(request, id):
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def addMyFavoriteMovies(request, id):
-    print("Im here")
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
@@ -453,7 +457,7 @@ def addMyFavoriteMovies(request, id):
 # add/movies_watched/<id>
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def addMoviesWatched(request,id):
+def addMoviesWatched(request, id):
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
@@ -467,7 +471,7 @@ def addMoviesWatched(request,id):
 # add/want_to_watch/<id>
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def addWantToWatch(request,id):
+def addWantToWatch(request, id):
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
@@ -478,3 +482,4 @@ def addWantToWatch(request,id):
         return Response(status=status.HTTP_403_FORBIDDEN)
     profile.want_to_watch.add(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
+

@@ -9,17 +9,17 @@
                     <p>Rating: {{ movie.rating }}<i class="bi bi-star-fill" style="color: yellow"></i>
                     </p>
                     <p>Cast: </p>
-                    <a *ngFor="let actor of movie.cast" href="/person/actors/{{actor.id}}"><img
+                    <a *ngFor="let actor of movie.cast" routerLink="/person/actors/{{actor.id}}"><img
                             src="{{ actor.imageField }}" title="{{ actor.name }}"></a>
                     <p>Director: </p>
-                    <a *ngFor="let director of movie.director" href="/person/directors/{{director.id}}"><img
+                    <a *ngFor="let director of movie.director" routerLink="/person/directors/{{director.id}}"><img
                             src="{{ director.imageField }}" title="{{ director.name }}"></a>
                     <p>Producer: </p>
-                    <a *ngFor="let producer of movie.producer" href="/producer/{{producer.id}}"><img
+                    <a *ngFor="let producer of movie.producer" routerLink="/producer/{{producer.id}}"><img
                             src="{{ producer.imageField }}" title="{{ producer.name }}"></a>
 
                     <p>Genres: </p>
-                    <h7 *ngFor="let genre of movie.genre">{{ genre }}</h7>
+                    <h7 *ngFor="let genre of movie.genre"> {{ genre.name }} </h7>
                 </div>
 
             </div>
@@ -28,71 +28,16 @@
             <img src="{{ movie.imageField }}" class="movie-image">
         </div>
     </div>
-    <!-- {% if group == "admin" %} -->
-    <div class="row w-25">
+    <div class="row w-25" *ngIf="isSuperUser()">
         <div class="col">
-            <a class="btn" href="{% url 'editMovie' id=movie.id %}" role="button">
+            <button class="btn" (click)="editMovie(movie)" role="button">
                 <i class="bi bi-pencil-fill icon-info"></i>
-            </a>
+            </button>
         </div>
         <div class="col">
-            <a class="btn" href="{% url 'deleteMovie' id=movie.id %}" role="button">
-                <!-- onclick="return confirm('Are you sure you want to delete {{ movie }}?');"> -->
+            <button class="btn" (click)="deleteMovie(movie)" role="button">
                 <i class="bi bi-trash-fill icon-info"></i>
-            </a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
-            <!-- {% if movie not in profile.movies_watched.all %} -->
-            <form method="post" action="/movies/">
-                <!-- {% csrf_token %} -->
-                <!-- <input name="add_movie_watched" value={{ movie.id }} hidden> -->
-                <button type="submit" class="btn"><i class="bi bi-eye icon" style="color: white"></i>
-                </button>
-            </form>
-            <!-- {% else %}
-            <form method="post" action="/movies/">
-                {% csrf_token %}
-                <input name="remove_movie_watched" value={{ movie.id }} hidden>
-                <button type="submit" class="btn"><i class="bi bi-eye-fill icon" style="color: white"></i>
-                </button>
-            </form>
-            {% endif %} -->
-        </div>
-        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
-            <!-- {% if movie not in profile.want_to_watch.all %} -->
-            <form method="post" action="/movies/">
-                <!-- {% csrf_token %} -->
-                <!-- <input name="add_want_to_watch" value={{ movie.id }} hidden> -->
-                <button type="submit" class="btn"><i class="bi bi-plus-circle icon" style="color: white"></i>
-                </button>
-            </form>
-            <!-- {% else %}
-            <form method="post" action="/movies/">
-                {% csrf_token %}
-                <input name="remove_want_to_watch" value={{ movie.id }} hidden>
-                <button type="submit" class="btn"><i class="bi bi-plus-circle-fill icon"
-                        style="color: white"></i></button>
-            </form>
-            {% endif %} -->
-        </div>
-        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
-            <!-- {% if movie not in profile.favorite_movies.all %} -->
-            <form method="post" action="/movies/">
-                <!-- {% csrf_token %} -->
-                <!-- <input name="add_favorite_movies" value={{ movie.id }} hidden> -->
-                <button type="submit" class="btn"><i class="bi bi-heart icon" style="color: white"></i>
-                </button>
-            </form>
-            <!-- {% else %}
-            <form method="post" action="/movies/">
-                {% csrf_token %}
-                <input name="remove_favorite_movies" value={{ movie.id }} hidden>
-                <button type="submit" class="btn"><i class="bi bi-heart-fill icon" style="color: white"></i>
-                </button>
-            </form>
-            {% endif %} -->
+            </button>
         </div>
     </div>
 </div>

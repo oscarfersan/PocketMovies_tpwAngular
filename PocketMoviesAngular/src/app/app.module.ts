@@ -15,6 +15,7 @@ import { SignupComponent } from './signup/signup.component';
 import { InfoMovieComponent } from './info-movie/info-movie.component';
 import { InfoPersonComponent } from './info-person/info-person.component';
 import { InfoProducerComponent } from './info-producer/info-producer.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
 import { EditPersonComponent } from './edit-person/edit-person.component';
@@ -24,7 +25,7 @@ export function tokenGetter() {
     return localStorage.getItem("token");
   }
 
-@NgModule({
+  @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
@@ -34,7 +35,9 @@ export function tokenGetter() {
     ListProducerComponent,
     InfoMovieComponent,
     InfoPersonComponent,
-    InfoProducerComponent, 
+    InfoProducerComponent,
+    SignupComponent,
+    ProfilePageComponent,
     SignupComponent, EditMovieComponent, AddMovieComponent, EditPersonComponent, AddPersonComponent,
   ],
   imports: [

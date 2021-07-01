@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { Genre } from '../classes/Genre';
 import { Movie } from '../classes/Movie';
 import { Person } from '../classes/Person';
@@ -24,13 +25,13 @@ export class AddMovieComponent implements OnInit {
     constructor(private router: Router, private movieService: MovieServiceService, private peopleService: PeopleServiceService, private genreService: GenreService) {}
   
     ngOnInit(): void {
-      this.peopleService.getPeople("actors").subscribe(value=> {
+      this.peopleService.getPeople("actors", environment.baseUrl + '/people/actors').subscribe(value=> {
         this.allActors = value["results"];
       })
-      this.peopleService.getPeople("directors").subscribe(value=> {
+      this.peopleService.getPeople("directors", environment.baseUrl + '/people/directors').subscribe(value=> {
         this.allDirectors = value["results"];
       })
-      this.peopleService.getPeople("producers").subscribe(value=> {
+      this.peopleService.getPeople("producers", environment.baseUrl + '/people/producers').subscribe(value=> {
         this.allProducers = value["results"];
       })
       this.genreService.getGenres().subscribe(value=> {
