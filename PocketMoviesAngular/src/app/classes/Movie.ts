@@ -1,3 +1,4 @@
+import { Director } from "./Director";
 import { Genre } from "./Genre";
 import { Person } from "./Person";
 import { Producer } from "./Producer";
@@ -7,9 +8,9 @@ export class Movie{
     title:string;
     description:string;
     rating:number;
-    director:Person[];
+    director:Director[];
     cast:Person[];
-    genres:Genre[];
+    genre:Genre[];
     producer:Producer[];
     imageField:string;
     published_date:Date;

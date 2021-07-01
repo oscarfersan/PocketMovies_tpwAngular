@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { AuthenticationService } from './authentication.service';
 import { Person } from './classes/Person';
 
@@ -12,9 +13,33 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class PeopleServiceService {
-  private baseURL = 'http://localhost:8000/';
-
-  constructor(private http: HttpClient, private authService: AuthenticationService) { }
+  private selectedPerson: Person;
+  
+  private addActorUrl: string;
+  private addDirectorUrl: string;
+  private addProducerUrl: string;
+  
+  private editActorUrl: string;
+  private editDirectorUrl: string;
+  private editProducerUrl: string;
+  
+  private deleteActorUrl: string;
+  private deleteDirectorUrl: string;
+  private deleteProducerUrl: string;
+  
+  constructor(private http: HttpClient, private authService: AuthenticationService) {
+    this.addActorUrl = environment.baseUrl + '/add/actor/';
+    this.addDirectorUrl = environment.baseUrl + '/add/director/';
+    this.addProducerUrl = environment.baseUrl + '/add/producer/';
+    
+    this.editActorUrl = environment.baseUrl + '/edit/actor/';
+    this.editDirectorUrl = environment.baseUrl + '/edit/director/';
+    this.editProducerUrl = environment.baseUrl + '/edit/producer/';
+    
+    this.deleteActorUrl = environment.baseUrl + '/delete/actor/';
+    this.deleteDirectorUrl = environment.baseUrl + '/delete/director/';
+    this.deleteProducerUrl = environment.baseUrl + '/delete/producer/';
+  }
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -23,12 +48,50 @@ export class PeopleServiceService {
     })
   };
 
+  setSelectedPerson(person: Person) {
+    this.selectedPerson = person;
+  }
+
+  get getSelectedPerson() {
+    return this.selectedPerson;
+  }
+
   getPeople(param:string):Observable<Person[]>{
-    const url = this.baseURL+'people/'+param;
+    const url = environment.baseUrl+'/people/'+param;
     return this.http.get<Person[]>(url, this.httpOptions);
   }
   getSelected(param:string,id:number):Observable<Person>{
-    const url = this.baseURL+'people/'+param+'/'+id;
+    const url = environment.baseUrl+'/people/'+param+'/'+id;
     return this.http.get<Person>(url, this.httpOptions);
+  }
+
+  addActor(person: Person): Observable<Person> {
+    return this.http.post<Person>(this.addActorUrl, person, this.httpOptions);
+  }
+  addDirector(person: Person): Observable<Person> {
+    return this.http.post<Person>(this.addDirectorUrl, person, this.httpOptions);
+  }
+  addProducer(person: Person): Observable<Person> {
+    return this.http.post<Person>(this.addProducerUrl, person, this.httpOptions);
+  }
+
+  editActor(person: Person): Observable<Person> {
+    return this.http.put<Person>(this.editActorUrl + person.id, person, this.httpOptions);
+  }
+  editDirector(person: Person): Observable<Person> {
+    return this.http.put<Person>(this.editDirectorUrl + person.id, person, this.httpOptions);
+  }
+  editProducer(person: Person): Observable<Person> {
+    return this.http.put<Person>(this.editProducerUrl + person.id, person, this.httpOptions);
+  }
+
+  deleteActor(person: Person): Observable<Person> {
+    return this.http.delete<Person>(this.deleteActorUrl + person.id, this.httpOptions);
+  }
+  deleteDirector(person: Person): Observable<Person> {
+    return this.http.delete<Person>(this.deleteDirectorUrl + person.id, this.httpOptions);
+  }
+  deleteProducer(person: Person): Observable<Person> {
+    return this.http.delete<Person>(this.deleteProducerUrl + person.id, this.httpOptions);
   }
 }

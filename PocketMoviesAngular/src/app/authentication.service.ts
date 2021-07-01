@@ -42,6 +42,7 @@ export class AuthenticationService {
             this.http.get(this.permissionsUrl, permHttpOptions).subscribe(
               value => {
                 this.isSuperuser = value["admin"];
+                localStorage.setItem("ad", value["admin"]);
               }
             );
 
@@ -74,11 +75,12 @@ export class AuthenticationService {
   }
 
   isSuperUser() {
-    return this.isSuperuser
+    return this.isSuperuser || localStorage.getItem("ad")=="true";
   }
 
   logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("ad");
     this.isSuperuser = false;
   }
 }

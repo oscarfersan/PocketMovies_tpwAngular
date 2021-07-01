@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from '../authentication.service';
 import { Genre } from '../classes/Genre';
 import { Movie } from '../classes/Movie';
+import { EditMovieService } from '../edit-movie.service';
 import { MovieServiceService } from '../movie-service.service';
 import { UserServiceService } from '../user-service.service';
 
@@ -13,9 +14,9 @@ import { UserServiceService } from '../user-service.service';
   styleUrls: ['./list-movies.component.css']
 })
 export class ListMoviesComponent implements OnInit {
-  movie_list:Movie[];
-  genre_list:Genre[];
-  param:string;
+  movie_list: Movie[];
+  genre_list: Genre[];
+  param: string;
   private next: string;
   private previous: string;
   private allMoviesUrl: string;
@@ -26,7 +27,7 @@ export class ListMoviesComponent implements OnInit {
   private activePage: number = 1;
   private nPages: number;
 
-  constructor(private movieService: MovieServiceService,private route: ActivatedRoute, private userService: UserServiceService, private authService: AuthenticationService) { }
+  constructor(private router: Router, private movieService: MovieServiceService, private route: ActivatedRoute, private userService: UserServiceService, private authService: AuthenticationService, private editMovieService: EditMovieService) { }
 
   ngOnInit(): void {
     this.allMoviesUrl = environment.baseUrl + '/movies/all';
@@ -34,13 +35,13 @@ export class ListMoviesComponent implements OnInit {
     this.watchedMoviesUrl = environment.baseUrl + '/movies/my_watched_movies';
     this.wantToWatchMoviesUrl = environment.baseUrl + '/movies/my_want_to_watch';
 
-    this.movieService.getMovies(this.favoriteMoviesUrl).subscribe(value=>{
+    this.movieService.getMovies(this.favoriteMoviesUrl).subscribe(value => {
       this.userService.setFavorites(value["results"]);
     })
-    this.movieService.getMovies(this.watchedMoviesUrl).subscribe(value=>{
+    this.movieService.getMovies(this.watchedMoviesUrl).subscribe(value => {
       this.userService.setWatched(value["results"]);
     })
-    this.movieService.getMovies(this.wantToWatchMoviesUrl).subscribe(value=>{
+    this.movieService.getMovies(this.wantToWatchMoviesUrl).subscribe(value => {
       this.userService.setWantToWatch(value["results"]);
     })
 
@@ -55,12 +56,12 @@ export class ListMoviesComponent implements OnInit {
         this.getMovies(this.allMoviesUrl);
     })
   }
-  getMovies(moviesUrl: string){
-    this.movieService.getMovies(moviesUrl).subscribe(list=>{
-      this.movie_list=list["results"];
+  getMovies(moviesUrl: string) {
+    this.movieService.getMovies(moviesUrl).subscribe(list => {
+      this.movie_list = list["results"];
       this.next = list["next"];
       this.previous = list["previous"];
-      this.nPages = Math.ceil(list["count"]/9)
+      this.nPages = Math.ceil(list["count"] / 9)
       this.pageRange = this.calcPageRange(1);
     });
   }
@@ -98,15 +99,15 @@ export class ListMoviesComponent implements OnInit {
 
   calcPageRange(page: number) {
     if (this.nPages <= 5)
-      return Array.from({length: this.nPages}, (_, i) => i + 1)
-    
+      return Array.from({ length: this.nPages }, (_, i) => i + 1)
+
     if (page == 1 || page == 2)
       return [1, 2, 3, 4, 5];
-    
-    if (page == this.nPages-1 || page == this.nPages-2)
-      return [this.nPages-3, this.nPages-3, this.nPages-2, this.nPages-1, this.nPages];
-    
-    return [page-2, page-1, page, page+1, page+2];
+
+    if (page == this.nPages - 1 || page == this.nPages - 2)
+      return [this.nPages - 3, this.nPages - 3, this.nPages - 2, this.nPages - 1, this.nPages];
+
+    return [page - 2, page - 1, page, page + 1, page + 2];
   }
 
   isSuperUser() {
@@ -147,5 +148,19 @@ export class ListMoviesComponent implements OnInit {
 
   removeFromWantToWatch(movie: Movie) {
     this.userService.removeMovieFromWantToWatch(movie)
+  }
+
+  deleteMovie(movie: Movie) {
+    if (confirm(`Are you sure you want to delete ${movie.title}?`)) {
+      this.movie_list.forEach((value, index) => {
+        if (value.id == movie.id) this.movie_list.splice(index, 1);
+      });
+      this.movieService.deleteMovie(movie);
+    }
+  }
+
+  editMovie(movie: Movie) {
+    this.editMovieService.setSelectedMovie(movie);
+    this.router.navigate(['/editMovie/' + movie.id]);
   }
 }
