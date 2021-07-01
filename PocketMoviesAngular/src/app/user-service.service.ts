@@ -37,18 +37,6 @@ export class UserServiceService {
         this.current_user = user;
     }
 
-    fetchFavoriteMovies(): Observable<Movie[]> {
-        return this.http.get<Movie[]>(this.moviesUrl + '/my_favorite_movies', this.httpOptions);
-    }
-
-    fetchWatchedMovies(): Observable<Movie[]> {
-        return this.http.get<Movie[]>(this.moviesUrl + '/my_watched_movies', this.httpOptions);
-    }
-
-    fetchMustWatchMovies(): Observable<Movie[]> {
-        return this.http.get<Movie[]>(this.moviesUrl + '/my_want_to_watch', this.httpOptions);
-    }
-
     get getFavoriteMovies() {
         return this.favoriteMovies;
     }

@@ -42,28 +42,13 @@ export class AuthenticationService {
             this.http.get(this.permissionsUrl, permHttpOptions).subscribe(
               value => {
                 this.isSuperuser = value["admin"];
+                localStorage.setItem("ad", value["admin"]);
               }
             );
 
             this.http.get<User>(this.permissionsUrl, permHttpOptions).subscribe(
                 value => {
                     this.userService.setCurrentUser(value);
-                }
-            );
-
-            this.userService.fetchFavoriteMovies().subscribe( 
-                value => {
-                    this.userService.setFavorites(value["results"]);
-                }
-            );
-            this.userService.fetchWatchedMovies().subscribe( 
-                value => {
-                    this.userService.setWatched(value["results"]);
-                }
-            );
-            this.userService.fetchMustWatchMovies().subscribe( 
-                value => {
-                    this.userService.setWantToWatch(value["results"]);
                 }
             );
 
@@ -90,11 +75,12 @@ export class AuthenticationService {
   }
 
   isSuperUser() {
-    return this.isSuperuser
+    return this.isSuperuser || localStorage.getItem("ad")=="true";
   }
 
   logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("ad");
     this.isSuperuser = false;
   }
 }
