@@ -63,9 +63,9 @@ class Producer(models.Model):
 
 class Director(models.Model):
     name = models.CharField(max_length=255)
-    nationality = models.CharField(max_length=50)
+    nationality = models.CharField(max_length=50, blank=True)
     birthdate = models.DateField()
-    website = models.URLField()
+    website = models.URLField(blank=True)
     imageField = models.URLField(blank=True)
     twitterAccount = models.CharField(max_length=255, blank=True)
     instagramAccount = models.CharField(max_length=255, blank=True)

@@ -158,9 +158,9 @@ def infoPeople(request, person, id):
 # 'movies/<int:id>
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def infoMovie(request, movie_id):
+def infoMovie(request, id):
     try:
-        movie = Movie.objects.get(id=movie_id)
+        movie = Movie.objects.get(id=id)
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
     except:
@@ -184,10 +184,10 @@ def infoProfile(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addActor(request):
-    serializer = ActorSerializer(data=request.data)
-    user = request.user
-    if user.groups.filter(name="client").exists():
+    if not request.user.is_staff:
         return Response(status=status.HTTP_403_FORBIDDEN)
+
+    serializer = ActorSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -198,10 +198,10 @@ def addActor(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addDirector(request):
-    serializer = DirectorSerializer(data=request.data)
-    user = request.user
-    if user.groups.filter(name="client").exists():
+    if not request.user.is_staff:
         return Response(status=status.HTTP_403_FORBIDDEN)
+
+    serializer = DirectorSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -212,10 +212,10 @@ def addDirector(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addProducer(request):
-    serializer = ProducerSerializer(data=request.data)
-    user = request.user
-    if user.groups.filter(name="client").exists():
+    if not request.user.is_staff:
         return Response(status=status.HTTP_403_FORBIDDEN)
+
+    serializer = ProducerSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -226,13 +226,14 @@ def addProducer(request):
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def addMovie(request):
-    serializer = MovieSerializer(data=request.data)
-    user = request.user
-    if user.groups.filter(name="client").exists():
+    if not request.user.is_staff:
         return Response(status=status.HTTP_403_FORBIDDEN)
+
+    serializer = MovieSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -240,15 +241,16 @@ def addMovie(request):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def editActor(request, id):
+    if not request.user.is_staff:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     id = request.data['id']
     try:
         actor = Actor.objects.get(id=id)
     except Actor.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = ActorSerializer(actor, data=request.data)
-    user = request.user
-    if user.groups.filter(name="client").exists():
-        return Response(status=status.HTTP_403_FORBIDDEN)
+
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
@@ -259,18 +261,20 @@ def editActor(request, id):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def editDirector(request, id):
+    if not request.user.is_staff:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     id = request.data['id']
     try:
         director = Director.objects.get(id=id)
     except Director.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    serializer = ActorSerializer(director, data=request.data)
-    user = request.user
-    if user.groups.filter(name="client").exists():
-        return Response(status=status.HTTP_403_FORBIDDEN)
+    serializer = DirectorSerializer(director, data=request.data)
+
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
+    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -278,15 +282,16 @@ def editDirector(request, id):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def editProducer(request, id):
+    if not request.user.is_staff:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     id = request.data['id']
     try:
         producer = Producer.objects.get(id=id)
     except Producer.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = ProducerSerializer(producer, data=request.data)
-    user = request.user
-    if user.groups.filter(name="client").exists():
-        return Response(status=status.HTTP_403_FORBIDDEN)
+
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
@@ -297,18 +302,21 @@ def editProducer(request, id):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def editMovie(request, id):
+    print(request.data)
+    if not request.user.is_staff:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     id = request.data['id']
     try:
         movie = Movie.objects.get(id=id)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = MovieSerializer(movie, data=request.data)
-    user = request.user
-    if user.groups.filter(name="client").exists():
-        return Response(status=status.HTTP_403_FORBIDDEN)
+    
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
+    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -316,13 +324,14 @@ def editMovie(request, id):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def deleteActor(request, id):
+    if not request.user.is_staff:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     try:
         actor = Actor.objects.get(id=id)
     except Director.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    user = request.user
-    if user.groups.filter(name="client").exists():
-        return Response(status=status.HTTP_403_FORBIDDEN)
+
     actor.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -331,13 +340,14 @@ def deleteActor(request, id):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def deleteDirector(request, id):
+    if not request.user.is_staff:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     try:
         director = Director.objects.get(id=id)
     except Director.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    user = request.user
-    if user.groups.filter(name="client").exists():
-        return Response(status=status.HTTP_403_FORBIDDEN)
+
     director.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -346,13 +356,14 @@ def deleteDirector(request, id):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def deleteProducer(request, id):
+    if not request.user.is_staff:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     try:
         producer = Producer.objects.get(id=id)
     except Producer.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    user = request.user
-    if user.groups.filter(name="client").exists():
-        return Response(status=status.HTTP_403_FORBIDDEN)
+
     producer.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -361,14 +372,16 @@ def deleteProducer(request, id):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def deleteMovie(request, id):
+    if not request.user.is_staff:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     try:
         movie = Movie.objects.get(id=id)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    user = request.user
-    if user.groups.filter(name="client").exists():
-        return Response(status=status.HTTP_403_FORBIDDEN)
+    
     movie.delete()
+    
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 

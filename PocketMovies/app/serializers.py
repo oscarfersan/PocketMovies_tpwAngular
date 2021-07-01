@@ -38,7 +38,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = ['name']
+        fields = ('id', 'name')
 
 class MovieSerializer(serializers.ModelSerializer):
     cast = ActorSerializer(many=True)
@@ -48,6 +48,24 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = ('id','title', 'description', 'genre', 'rating', 'director', 'producer', 'cast', 'imageField', 'published_date')
+    # def update(self, instance, validated_data):
+    #     instance.title = validated_data["title"]
+    #     instance.description = validated_data["description"]
+    #     instance.rating = validated_data["rating"]
+    #     instance.imageField = validated_data["imageField"]
+    #     instance.published_date = validated_data["published_date"]
+    #     for genre in validated_data["genre"]:
+    #         if genre not in instance.genre.all():
+    #             instance.genre.add(genre)
+    #     for actor in validated_data["cast"]:
+    #         if actor not in instance.cast:
+    #             instance.cast.add(actor)
+    #     for director in validated_data["director"]:
+    #         if director not in instance.director:
+    #             instance.director.add(director)
+    #     for producer in validated_data["producer"]:
+    #         if producer not in instance.producer:
+    #             instance.producer.add(producer)
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
