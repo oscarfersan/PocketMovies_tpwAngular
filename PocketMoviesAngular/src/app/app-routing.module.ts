@@ -12,7 +12,10 @@ import { InfoPersonComponent } from './info-person/info-person.component';
 import { InfoMovieComponent } from './info-movie/info-movie.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { SignupComponent } from './signup/signup.component';
-import { PersonalListComponent } from './personal-list/personal-list.component';
+import { EditMovieComponent } from './edit-movie/edit-movie.component';
+import { AddMovieComponent } from './add-movie/add-movie.component';
+import { EditPersonComponent } from './edit-person/edit-person.component';
+import { AddPersonComponent } from './add-person/add-person.component';
 
 const routes: Routes = [
     {path: '',component: HomeComponent},
@@ -21,6 +24,10 @@ const routes: Routes = [
     {path: 'listPeople/:type',component: ListPeopleComponent},
     {path: 'listMovies/:type',component: ListMoviesComponent},
     {path: 'listProducers',component: ListProducerComponent},
+    {path: 'editMovie/:id', component: EditMovieComponent},
+    {path: 'editPerson/:type/:id', component: EditPersonComponent},
+    {path: 'addMovie', component: AddMovieComponent},
+    {path: 'addPerson/:type', component: AddPersonComponent},
     {path: 'producer/:id',component: InfoProducerComponent},
     {path: 'person/:type/:id',component: InfoPersonComponent},
     {path: 'movie/:id',component: InfoMovieComponent},

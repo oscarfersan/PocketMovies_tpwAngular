@@ -1,10 +1,10 @@
 .container-fluid-movies {
     max-width: 90%;
-    horiz-align: center;
 }
 
 .img-movie {
-    border-radius: 10%;
+    border-bottom-left-radius: 10%;
+    border-bottom-right-radius: 10%;
 }
 
 .title-movie {

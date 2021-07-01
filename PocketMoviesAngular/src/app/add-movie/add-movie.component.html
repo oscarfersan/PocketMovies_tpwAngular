@@ -1,0 +1,68 @@
+<div class="container bg-dark text-white mt-5">
+    <h1 style="text-align: center; padding-top: 20px; padding-bottom: 20px"></h1>
+    <div class="row">
+        <div class="col-*-* mx-auto outter-input-group">
+            <div class="input-group mb-3">
+                <span id="title" class="input-group-text justify-content-center">Title:</span>
+                <input type="text" [(ngModel)]="movie.title" class="form-control" aria-describedby="title" placeholder="Title">
+            </div>
+        </div>
+        <div class="col-*-* mx-auto outter-input-group">
+            <div class="input-group mb-3">
+                <span id="description" class="input-group-text justify-content-center">Description:</span>
+                <textarea [(ngModel)]="movie.description" class="form-control"  style="width: 50vh;" aria-describedby="description" placeholder="Description"></textarea>
+            </div>
+        </div>
+        <div class="col-*-* mx-auto outter-input-group">
+            <div class="input-group mb-3">
+                <span id="rating" class="input-group-text justify-content-center">Rating:</span>
+                <input type="text" [(ngModel)]="movie.rating" class="form-control" aria-describedby="rating" placeholder="Rating">
+            </div>
+        </div>
+        <div class="col-*-* mx-auto outter-input-group">
+            <div class="input-group mb-3">
+                <span id="imageUrl" class="input-group-text justify-content-center">Image Url:</span>
+                <input type="url" [(ngModel)]="movie.imageField" class="form-control" aria-describedby="imageUrl" placeholder="Image Url" style="width: 40vh !important;">
+            </div>
+        </div>
+        <div class="col-*-* mx-auto outter-input-group">
+            <div class="input-group mb-3">
+                <span id="publishDate" class="input-group-text justify-content-center">Publish Date:</span>
+                <input type="date" [(ngModel)]="movie.published_date" class="form-control" aria-describedby="publishDate" placeholder="Published Date">
+            </div>
+        </div>
+        <div class="col-*-* mx-auto outter-input-group">
+            <div class="input-group mb-3">
+                <span id="genre" class="input-group-text justify-content-center">Genre:</span>
+                <select [(ngModel)]="movie.genre" multiple [compareWith]="compareByName" aria-describedby="genre">
+                    <option *ngFor="let genre of allGenres" [ngValue]="genre">{{genre.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-*-* mx-auto outter-input-group">
+            <div class="input-group mb-3">
+                <span id="cast" class="input-group-text justify-content-center">Cast:</span>
+                <select [(ngModel)]="movie.cast" multiple [compareWith]="compareById" aria-describedby="cast">
+                    <option *ngFor="let actor of allActors" [ngValue]="actor">{{actor.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-*-* mx-auto outter-input-group">
+            <div class="input-group mb-3">
+                <span id="directors" class="input-group-text justify-content-center">Directors:</span>
+                <select [(ngModel)]="movie.director" multiple [compareWith]="compareById" aria-describedby="directors">
+                    <option *ngFor="let director of allDirectors" [ngValue]="director">{{director.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-*-* mx-auto outter-input-group">
+            <div class="input-group mb-3">
+                <span id="producers" class="input-group-text justify-content-center">Producers:</span>
+                <select [(ngModel)]="movie.producer" multiple [compareWith]="compareById" aria-describedby="producers">
+                    <option *ngFor="let producer of allProducers" [ngValue]="producer">{{producer.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <button (click)="saveChanges()" class="btn btn-light" type="button" style="margin-bottom: 20px;">Add<i class="bi bi-plus" style="color: black;font-size: 20px"></i></button>
+</div>

@@ -14,23 +14,18 @@
             <img src="{{ person.imageField }}" class="person-image">
         </div>
         <!-- {% if group == "admin" %} -->
-            <div class="row w-25">
-                <div class="col">
-                        <a *ngIf="type=='actors'" class="btn" href="{% url 'editActor' id=person.id %}" role="button">
-                            <i class="bi bi-pencil-fill icon-info"></i>
-                        </a>
-                        <a *ngIf="type=='actors'" class="btn" href="{% url 'editDirector' id=person.id %}" role="button">
-                            <i class="bi bi-pencil-fill icon-info"></i>
-                        </a>
-                </div>
-                <div class="col">
-                        <a *ngIf="type=='actors'" class="btn" href="{% url 'deleteActor' id=person.id %}" role="button"
-                           onclick="return confirm('Are you sure you want to delete {{ person }}?');">
-                            <i class="bi bi-trash-fill icon-info"></i>
-                        </a>
-                        <a *ngIf="type!='actors'"class="btn" href="{% url 'deleteDirector' id=person.id %}" role="button"
-                           onclick="return confirm('Are you sure you want to delete {{ person }}?');">
-                            <i class="bi bi-trash-fill icon-info"></i>
-                        </a>
-                </div>
+        <div class="row w-25">
+            <div class="col">
+                <button class="btn" (click)="editPerson(person)" style="cursor: pointer;">
+                    <i class="bi bi-pencil-fill icon-info"></i>
+                </button>
             </div>
+            <div class="col">
+                <button class="btn" (click)="deletePerson(person)">
+                    <i class="bi bi-trash-fill icon-info"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+        
