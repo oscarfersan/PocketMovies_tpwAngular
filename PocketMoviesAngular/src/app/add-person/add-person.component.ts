@@ -58,13 +58,12 @@ export class AddPersonComponent implements OnInit {
   }
 
   get isActor() {
-    console.log("Fodasse", this.type)
     return this.type=="actors"
   }
-  get isProducer() {console.log("Fodasse", this.type)
+  get isProducer() {
     return this.type=="producers"
   }
-  get isDirector() {console.log("Fodasse", this.type)
+  get isDirector() {
     return this.type=="directors"
   }
 

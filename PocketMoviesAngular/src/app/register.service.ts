@@ -11,7 +11,7 @@ import { User } from './classes/User';
 })
 export class RegisterService {
 
-    private loginUrl: string;
+    private registerUrl: string;
 
     private httpOptions = {
         headers: new HttpHeaders({
@@ -20,11 +20,11 @@ export class RegisterService {
     };
 
     constructor(private http: HttpClient, private router: Router) {
-        this.loginUrl = environment.baseUrl + '/register/';
+        this.registerUrl = environment.baseUrl + '/register/';
     }
 
     register(newUser: User) {
-        this.http.post<string>(this.loginUrl, newUser, this.httpOptions)
+        this.http.post<string>(this.registerUrl, newUser, this.httpOptions)
             .subscribe(
                 value => {
                     if (value != null) {
@@ -37,14 +37,4 @@ export class RegisterService {
                 error => { return throwError("Authentication request unsuccessful.") }
             );
     }
-    // {
-    //     "user": {
-    //     "fname": "Pedro",
-    //     "lname": "Santos",
-    //     "email": "pedro.miguel50@ua.pt",
-    //     "username": "PedroS50",
-    //     "password": "pedro1234"
-    //     },
-    //     "favorite_genres": []
-    //     }
 }

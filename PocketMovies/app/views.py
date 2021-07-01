@@ -1,23 +1,12 @@
-from django import template
 from django.contrib.auth.models import Group
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponse
 from app.models import *
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.forms.models import model_to_dict
+from django.core.paginator import Paginator
 from rest_framework import status
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from app.serializers import *
-from django.conf import settings
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from rest_framework.authtoken.models import Token
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.pagination import PageNumberPagination
 

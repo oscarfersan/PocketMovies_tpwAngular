@@ -33,7 +33,6 @@ export class EditPersonComponent implements OnInit {
       });
     if (this.type=="directors")
       this.peopleService.editDirector(this.person).subscribe(value=>{
-        console.log(value);
         this.router.navigate(['/person/' + this.type + '/' + this.person.id]);
         window.alert("Director successfully edited.");
       },

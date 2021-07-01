@@ -17,8 +17,6 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-LOGIN_URL = 'login'
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -28,7 +26,7 @@ SECRET_KEY = 'jfd^s$2r$pv!7&7#_f=1yxmkt9ielovf@^7yxbxis0c)l*0(p&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'martasferreira.pythonanywhere.com','localhost']
+ALLOWED_HOSTS = ['pedrobear.pythonanywhere.com','localhost']
 
 # Application definition
 
@@ -138,12 +136,10 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 9,
 
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
     ),
     'NON_FIELD_ERRORS_KEY': 'global',
 }

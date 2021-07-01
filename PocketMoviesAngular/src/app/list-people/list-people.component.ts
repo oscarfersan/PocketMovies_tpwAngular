@@ -31,7 +31,7 @@ export class ListPeopleComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.person_role = this.route.snapshot.paramMap.get('type');
       this.title = this.person_role.substr(0,1).toUpperCase() + this.person_role.substr(1);
-      this.getPeople(environment.baseUrl + '/people/' + this.person_role);
+      this.getPeople(this.peopleUrl + this.person_role);
     });
   }
 
@@ -45,7 +45,6 @@ export class ListPeopleComponent implements OnInit {
     });
     this.peopleService.getPeople(this.person_role.valueOf(), peopleUrl).subscribe(actors=>{
       this.person_list=actors["results"];
-      console.log(actors)
     });
   }
 
@@ -98,13 +97,12 @@ export class ListPeopleComponent implements OnInit {
   }
 
   get isActor() {
-    console.log(this.person_role)
     return this.person_role=="actors"
   }
-  get isProducer() {console.log(this.person_role)
+  get isProducer() {
     return this.person_role=="producers"
   }
-  get isDirector() {console.log(this.person_role)
+  get isDirector() {
     return this.person_role=="directors"
   }
 }
