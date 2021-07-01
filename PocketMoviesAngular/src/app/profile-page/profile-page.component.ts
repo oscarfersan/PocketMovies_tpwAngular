@@ -23,8 +23,11 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getCurrentUser().subscribe((data)=>{
+    const promise = this.userService.getCurrentUser().toPromise();
+    promise.then((data)=>{
       this.user = data;
+    }).catch(()=>{
+      window.location.reload();
     });
   }
   update(){

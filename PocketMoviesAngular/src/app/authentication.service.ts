@@ -50,7 +50,7 @@ export class AuthenticationService {
                     this.userService.setCurrentUser(value);
                 }
             );
-            this.router.navigate(['/listMovies/all']);
+            this.router.navigate(['/profile/']);
           } else {
             window.alert("Invalid credentials!");
           }
