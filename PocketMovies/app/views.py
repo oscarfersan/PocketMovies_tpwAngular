@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from app.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -25,15 +24,37 @@ from rest_framework.pagination import PageNumberPagination
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request):
-    serializer = RegisterSerializer(data=request.data)
+    serialized = RegisterSerializer(data=request.data)
+    if serialized.is_valid():
+        User.objects.create_user(
+            serialized.data['username'],
+            serialized.data['email'],
+            serialized.data['password'],
+        )
+        user = User.objects.get(username=serialized.data['username'])
+        token = Token.objects.get(user=user).key
+        data = {'email': user.email, 'username': user.username,
+                'token': token}
+        return Response(data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
+
+    serializer = self.get_serializer(data=request.data)
     if serializer.is_valid():
-        password = serializer.validated_data.get('password')
-        serializer.validated_data['password'] = make_password(password)
+      
+        ##password = serializer.validated_data.get('password')
+        ##serializer.validated_data['password'] = make_password(password)
+    
         user = serializer.save()
-        profile = Profile.objects.get(user=user)
+        profile = Profile.objects.get(user=User)
         group = Group.objects.get(name="client")
         profile.user.groups.add(group)
-        data = {'email': profile.user.email, 'username': profile.user.username}
+        
+        ##data = {'email': profile.user.email, 'username': profile.user.username}
+        
+        token = Token.objects.get(user=profile.user).key
+        data = {'email': profile.user.email, 'username': profile.user.username,
+                'token': token}
         serializer.save()
         return Response(data, status=status.HTTP_201_CREATED)
     else:
@@ -46,7 +67,6 @@ def getPermissions(request):
     reqUser = request.user
 
     return Response(data={'admin': reqUser.is_superuser})
-
 
 # 'movies/<str:movie>
 @api_view(['GET'])
@@ -64,13 +84,13 @@ def list_movies(request, movie):
     elif movie == 'my_watched_movies':
         movies = profile.movies_watched.all()
 
-    if 'genre' in request.GET:
-        genre = request.GET['genre']
+    if 'genre' in request.data:
+        genre = request.data['genre']
         if genre and genre != "All":
             genre_object = Genre.objects.get(name=genre)
             movies = movies.filter(genre=genre_object)
 
-    if 'title' in request.GET:
+    if 'title' in request.data:
         search_term = request.data['title']
         movies = movies.filter(title__icontains=search_term)
 
@@ -161,7 +181,7 @@ def infoPeople(request, person, id):
 def infoMovie(request, movie_id):
     try:
         movie = Movie.objects.get(id=movie_id)
-        serializer = MovieSerializer(movie)
+        serializer = ActorSerializer(movie)
         return Response(serializer.data)
     except:
         movie = None
@@ -178,7 +198,16 @@ def infoProfile(request):
     serializer = ProfileSerializer(profile)
     return Response(serializer.data)
 
-
+# 'edit/profile
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def editProfile(request):
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    serializer = ProfileSerializer(profile, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
 # add/actor/
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -239,7 +268,6 @@ def addMovie(request):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def editActor(request, id):
-    id = request.data['id']
     try:
         actor = Actor.objects.get(id=id)
     except Actor.DoesNotExist:
@@ -258,7 +286,6 @@ def editActor(request, id):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def editDirector(request, id):
-    id = request.data['id']
     try:
         director = Director.objects.get(id=id)
     except Director.DoesNotExist:
@@ -277,7 +304,6 @@ def editDirector(request, id):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def editProducer(request, id):
-    id = request.data['id']
     try:
         producer = Producer.objects.get(id=id)
     except Producer.DoesNotExist:
@@ -296,7 +322,6 @@ def editProducer(request, id):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def editMovie(request, id):
-    id = request.data['id']
     try:
         movie = Movie.objects.get(id=id)
     except Movie.DoesNotExist:
@@ -423,7 +448,6 @@ def deleteWantToWatch(request, id):
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def addMyFavoriteMovies(request, id):
-    print("Im here")
     try:
         movie = Movie.objects.get(id=id)
         user = request.user
@@ -464,3 +488,4 @@ def addWantToWatch(request, id):
         return Response(status=status.HTTP_403_FORBIDDEN)
     profile.want_to_watch.add(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
+
