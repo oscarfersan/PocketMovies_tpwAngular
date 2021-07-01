@@ -29,7 +29,7 @@ export class MovieServiceService {
     return this.http.get<Movie[]>(movieUrl, this.httpOptions);
   }
   getSelected(id: number): Observable<Movie> {
-    const url = environment.baseUrl + '/movie/' + id;
+    const url = environment.baseUrl + '/movies/' +'info'+'/' + id;
     return this.http.get<Movie>(url, this.httpOptions);
   }
 
