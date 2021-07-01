@@ -41,10 +41,17 @@ def register_user(request):
 
     serializer = self.get_serializer(data=request.data)
     if serializer.is_valid():
+      
+        ##password = serializer.validated_data.get('password')
+        ##serializer.validated_data['password'] = make_password(password)
+    
         user = serializer.save()
         profile = Profile.objects.get(user=User)
         group = Group.objects.get(name="client")
         profile.user.groups.add(group)
+        
+        ##data = {'email': profile.user.email, 'username': profile.user.username}
+        
         token = Token.objects.get(user=profile.user).key
         data = {'email': profile.user.email, 'username': profile.user.username,
                 'token': token}
@@ -53,6 +60,13 @@ def register_user(request):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getPermissions(request):
+    reqUser = request.user
+
+    return Response(data={'admin': reqUser.is_superuser})
 
 # 'movies/<str:movie>
 @api_view(['GET'])
@@ -184,7 +198,6 @@ def infoProfile(request):
     serializer = ProfileSerializer(profile)
     return Response(serializer.data)
 
-
 # 'edit/profile
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -195,8 +208,6 @@ def editProfile(request):
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
-
-
 # add/actor/
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

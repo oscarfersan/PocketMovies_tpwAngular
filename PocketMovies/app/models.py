@@ -38,7 +38,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
 class Actor(models.Model):
     name = models.CharField(max_length=255)
     birthdate = models.DateField()
-    years_active = models.IntegerField()
+    years_active = models.IntegerField(blank=True)
     nationality = models.CharField(max_length=50)
     imageField = models.URLField(blank=True)
     twitterAccount = models.CharField(max_length=255, blank=True)

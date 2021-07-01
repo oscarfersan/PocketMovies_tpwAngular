@@ -36,34 +36,20 @@ export class AuthenticationService {
           if (value != null) {
             let receivedToken = value["token"];
             localStorage.setItem('token', receivedToken);
+            console.log(receivedToken);
             this.router.navigate(['/listMovies/all']);
 
             let permHttpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'JWT ' + receivedToken }) };
             this.http.get(this.permissionsUrl, permHttpOptions).subscribe(
               value => {
                 this.isSuperuser = value["admin"];
+                localStorage.setItem("ad", value["admin"]);
               }
             );
 
             this.http.get<User>(this.permissionsUrl, permHttpOptions).subscribe(
                 value => {
                     this.userService.setCurrentUser(value);
-                }
-            );
-
-            this.userService.fetchFavoriteMovies().subscribe( 
-                value => {
-                    this.userService.setFavorites(value["results"]);
-                }
-            );
-            this.userService.fetchWatchedMovies().subscribe( 
-                value => {
-                    this.userService.setWatched(value["results"]);
-                }
-            );
-            this.userService.fetchMustWatchMovies().subscribe( 
-                value => {
-                    this.userService.setWantToWatch(value["results"]);
                 }
             );
 
@@ -90,11 +76,12 @@ export class AuthenticationService {
   }
 
   isSuperUser() {
-    return this.isSuperuser
+    return this.isSuperuser || localStorage.getItem("ad")=="true";
   }
 
   logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("ad");
     this.isSuperuser = false;
   }
 }
