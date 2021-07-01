@@ -400,8 +400,6 @@ def deleteMyFavoriteMovies(request, id):
         profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if user != profile.user:
-        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.favorite_movies.remove(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -416,8 +414,6 @@ def deleteMoviesWatched(request, id):
         profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if user != profile.user:
-        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.movies_watched.remove(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -432,8 +428,6 @@ def deleteWantToWatch(request, id):
         profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if user != profile.user:
-        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.want_to_watch.remove(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -448,8 +442,6 @@ def addMyFavoriteMovies(request, id):
         profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if user != profile.user:
-        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.favorite_movies.add(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -478,8 +470,6 @@ def addWantToWatch(request, id):
         profile = Profile.objects.get(user=user)
     except Movie.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if user != profile.user:
-        return Response(status=status.HTTP_403_FORBIDDEN)
     profile.want_to_watch.add(movie)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
