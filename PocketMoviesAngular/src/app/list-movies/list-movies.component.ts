@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+
 import { AuthenticationService } from '../authentication.service';
 import { Genre } from '../classes/Genre';
 import { Movie } from '../classes/Movie';

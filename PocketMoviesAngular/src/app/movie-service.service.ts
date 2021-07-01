@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from './authentication.service';
 import { Movie } from './classes/Movie';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -15,10 +14,10 @@ export class MovieServiceService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
+      'Accept': 'application/json, text/plain, */*',
       'Authorization': 'JWT ' + this.authService.getToken()
     })
   };
-
   constructor(private http: HttpClient, private authService: AuthenticationService) {
     this.deleteMovieUrl = environment.baseUrl + '/delete/movie/';
     this.editMovieUrl = environment.baseUrl + '/edit/movie/';

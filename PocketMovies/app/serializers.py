@@ -3,10 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 
-class MovieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Movie
-        fields = ('id','title', 'description', 'rating', 'director', 'producer', 'cast', 'imageField', 'published_date')
+
 
 
 class ActorSerializer(serializers.ModelSerializer):
@@ -47,6 +44,14 @@ class GenreSerializer(serializers.ModelSerializer):
         model = Genre
         fields = ('id', 'name')
 
+class MovieSerializer(serializers.ModelSerializer):
+    cast = ActorSerializer(many=True)
+    director = DirectorSerializer(many=True)
+    producer = ProducerSerializer(many=True)
+    genre = GenreSerializer(many=True)
+    class Meta:
+        model = Movie
+        fields = ('id','title', 'description', 'rating', 'director', 'producer', 'cast','genre','imageField', 'published_date')
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:

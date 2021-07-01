@@ -97,4 +97,7 @@ export class UserServiceService {
         return this.http.delete(this.removeUrl + '/want_to_watch/' + movie.id, this.httpOptions).subscribe();
     }
 
+    getCurrentUser():Observable<User>{
+        return this.http.get<User>(environment.baseUrl+'/profile/',this.httpOptions);
+    }
 }

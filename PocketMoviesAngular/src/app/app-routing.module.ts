@@ -10,6 +10,7 @@ import { ListProducerComponent } from './list-producer/list-producer.component';
 import { InfoProducerComponent } from './info-producer/info-producer.component';
 import { InfoPersonComponent } from './info-person/info-person.component';
 import { InfoMovieComponent } from './info-movie/info-movie.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { SignupComponent } from './signup/signup.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
@@ -30,6 +31,8 @@ const routes: Routes = [
     {path: 'producer/:id',component: InfoProducerComponent},
     {path: 'person/:type/:id',component: InfoPersonComponent},
     {path: 'movie/:id',component: InfoMovieComponent},
+    {path: 'personalList/:type', component: PersonalListComponent},
+    {path:'profile',component:ProfilePageComponent}
 ]
 
 @NgModule({

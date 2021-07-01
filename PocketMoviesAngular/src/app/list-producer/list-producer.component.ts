@@ -16,7 +16,6 @@ export class ListProducerComponent implements OnInit {
     this.getProducers();
   }
   getProducers(){
-    this.producerService.getProducer().subscribe(list=>this.producer_list=list);
-    console.log(this.producer_list);
+    this.producerService.getProducer().subscribe(list=>this.producer_list=list["results"]);
   }
 }
